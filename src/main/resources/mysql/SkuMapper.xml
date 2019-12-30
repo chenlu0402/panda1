@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sale.panda.dao.SkuMapper">
+
+    <select id="getUserList" resultType="com.sale.panda.dao.entity.Sku">
+        select id,user_name as name,password from user;
+    </select>
+    
+    <update id="update" parameterType="java.util.Date">
+        update user set created_time = #{date} where id =1;
+    </update>
+
+</mapper>
