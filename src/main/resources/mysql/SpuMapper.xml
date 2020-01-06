@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sale.panda.dao.SpuMapper">
+
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.Spu">
+        insert into spu
+        (spu_name,
+        in_price,
+        sale_price,
+        total_count)
+        VALUES
+        (#{spuName},
+        #{inPrice},
+        #{salePrice},
+        #{totalCount})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into spu
+        (spu_name,
+        in_price,
+        sale_price,
+        total_count)
+        VALUES
+        <foreach collection="list" item="spu" separator=",">
+            (#{spu.spuName},
+            #{spu.inPrice},
+            #{spu.salePrice},
+            #{spu.totalCount})
+        </foreach>
+    </insert>
+    
+    <update id="update" parameterType="com.sale.panda.dao.entity.Spu">
+        update spu set updated_time = now()
+        <if test="spuName !=null and spuName !=''">
+            ,spu_name = #{spuName}
+        </if>
+        <if test="inPrice !=null">
+            ,in_price = #{inPrice}
+        </if>
+        <if test="salePrice !=null">
+            ,sale_price = #{salePrice}
+        </if>
+        <if test="totalCount !=null">
+            ,total_count = #{totalCount}
+        </if>
+        where spu_id = #{spuId};
+    </update>
+    
+    <select id="pageQuery" parameterType="com.sale.panda.dao.entity.SpuPageQuery" resultType="com.sale.panda.dao.entity.Spu">
+        select
+            spu_id,
+            spu_name,
+            in_price,
+            sale_price,
+            total_count,
+            created_time,
+            updated_time
+        from spu
+        <where>
+            <if test="spuName !=null and spuName != ''">
+                spu_name like "%"#{spuName}"%"
+            </if>
+        </where>
+        limit #{offset},#{pageSize}
+    </select>
+
+</mapper>

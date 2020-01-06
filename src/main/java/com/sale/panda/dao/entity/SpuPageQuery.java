@@ -20,7 +20,7 @@ import lombok.experimental.FieldDefaults;
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SpuPageQuery {
+public class SpuPageQuery extends PageQuery{
 
     String spuName;
 }

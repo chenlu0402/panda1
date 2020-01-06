@@ -1,14 +1,19 @@
 package com.sale.panda.controller;
 
-import com.sale.panda.dao.entity.LoginUser;
-import com.sale.panda.manager.UserManager;
+import com.sale.panda.controller.model.BaseResult;
+import com.sale.panda.controller.model.SpuPageQueryModel;
+import com.sale.panda.dao.entity.Spu;
+import com.sale.panda.dao.entity.SpuPageQuery;
+import com.sale.panda.manager.SpuManager;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PandaSaleController {
 
     @Resource
-    private UserManager userManager;
+    private SpuManager spuManager;
 
     @RequestMapping("/")
     public String index(){
@@ -38,15 +43,11 @@ public class PandaSaleController {
         return "/remain";
     }
 
-    @RequestMapping("/user")
+    @PostMapping("/pageQuerySpu1")
     @ResponseBody
-    public List<LoginUser> user(){
-        return userManager.getUserList();
-    }
-
-    @RequestMapping("/update")
-    @ResponseBody
-    public void update(){
-        userManager.update(new Date());
+    public BaseResult<List<Spu>> pageQuerySpu(@RequestBody SpuPageQueryModel spuModel){
+        SpuPageQuery pageQuery = new SpuPageQuery();
+        BeanUtils.copyProperties(spuModel,pageQuery);
+        return BaseResult.buildSuccess(spuManager.pageQuery(pageQuery));
     }
 }

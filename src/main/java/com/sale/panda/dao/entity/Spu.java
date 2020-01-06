@@ -28,4 +28,6 @@ public class Spu {
     BigDecimal inPrice;
     BigDecimal salePrice;
     Integer totalCount;
+    String createdTime;
+    String updatedTime;
 }

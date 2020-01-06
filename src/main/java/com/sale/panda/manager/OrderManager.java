@@ -7,25 +7,20 @@
  */
 package com.sale.panda.manager;
 
-import com.sale.panda.dao.entity.Spu;
-import com.sale.panda.dao.entity.SpuPageQuery;
+import com.sale.panda.dao.entity.Order;
+import com.sale.panda.dao.entity.OrderDetail;
 
 import java.util.List;
 
 /**
  *
- *
  * @author chenlu
  * @version V1.0
- * @since 2019-12-28 17:37
+ * @since 2019-10-27 09:50
  */
-public interface SpuManager {
+public interface OrderManager {
 
-    Integer insert(Spu spu);
+    Integer insert(Order order);
 
-    Integer batchInsert(List<Spu> goods);
-
-    Integer update(Spu spu);
-
-    List<Spu> pageQuery(SpuPageQuery pageQuery);
+    Integer insert(List<OrderDetail> detail);
 }

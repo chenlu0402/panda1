@@ -33,9 +33,10 @@
                     /**添加一个tab标签**/
                     $("#myTab").tabs('add',{
                         title: title,
+                        fit:true,
                         selected: true,
                         closable:true,
-                        href:"http://localhost:8080/remain"
+                        content:'<iframe src="http://localhost:8080/remain" scrolling="no" style="width:100%;height:100%;"></iframe>'
                     });
                 }
             }

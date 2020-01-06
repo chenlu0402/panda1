@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sale.panda.dao.VipMemberMapper">
+
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.VipMember">
+        insert into vip_member(customer_name,mobile,discount,remark)
+        VALUES (#{customerName},#{mobile},#{discount},#{remark})
+    </insert>
+    
+
+    <select id="getMember" parameterType="java.lang.String" resultType="com.sale.panda.dao.entity.VipMember">
+        SELECT customer_name,discount,remark
+        from vip_member
+        where mobile = #{mobile}
+    </select>
+</mapper>

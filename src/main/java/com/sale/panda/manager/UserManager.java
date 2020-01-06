@@ -9,9 +9,6 @@ package com.sale.panda.manager;
 
 import com.sale.panda.dao.entity.LoginUser;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  *
  * @author chenlu
@@ -19,7 +16,7 @@ import java.util.List;
  * @since 2019-10-27 09:50
  */
 public interface UserManager {
-    List<LoginUser> getUserList();
+    Integer insert(LoginUser user);
 
-    Integer update(Date date);
+    LoginUser getUserByName(String name);
 }

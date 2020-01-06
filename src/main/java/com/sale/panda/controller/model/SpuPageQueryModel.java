@@ -5,27 +5,23 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the terms of the license agreement you entered into with GuaHao.com.
  */
-package com.sale.panda.manager;
+package com.sale.panda.controller.model;
 
-import com.sale.panda.dao.entity.Spu;
-import com.sale.panda.dao.entity.SpuPageQuery;
-
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 /**
- *
+ * 商品spu
  *
  * @author chenlu
  * @version V1.0
- * @since 2019-12-28 17:37
+ * @since 2019-12-28 16:43
  */
-public interface SpuManager {
-
-    Integer insert(Spu spu);
-
-    Integer batchInsert(List<Spu> goods);
-
-    Integer update(Spu spu);
-
-    List<Spu> pageQuery(SpuPageQuery pageQuery);
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class SpuPageQueryModel {
+    String spuName;
+    Integer pageSize = 10;
+    Integer pageNo = 1;
 }

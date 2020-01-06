@@ -9,6 +9,7 @@ package com.sale.panda.manager.impl;
 
 import com.sale.panda.dao.SpuMapper;
 import com.sale.panda.dao.entity.Spu;
+import com.sale.panda.dao.entity.SpuPageQuery;
 import com.sale.panda.manager.SpuManager;
 
 import java.util.List;
@@ -43,5 +44,11 @@ public class SpuManagerImpl implements SpuManager {
     @Override
     public Integer update(Spu spu) {
         return spuMapper.update(spu);
+    }
+
+    @Override
+    public List<Spu> pageQuery(SpuPageQuery pageQuery) {
+        List<Spu> result = spuMapper.pageQuery(pageQuery);
+        return result;
     }
 }

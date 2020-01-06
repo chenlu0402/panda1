@@ -8,6 +8,7 @@
 package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.Spu;
+import com.sale.panda.dao.entity.SpuPageQuery;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface SpuMapper {
 
     Integer batchUpdateByIds(Spu spu);
 
-    List<Spu> pageQuery();
+    List<Spu> pageQuery(SpuPageQuery pageQuery);
 
 
 }

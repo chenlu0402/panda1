@@ -11,9 +11,6 @@ import com.sale.panda.dao.UserMapper;
 import com.sale.panda.dao.entity.LoginUser;
 import com.sale.panda.manager.UserManager;
 
-import java.util.Date;
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -31,12 +28,12 @@ public class UserManagerImpl implements UserManager {
     private UserMapper userMapper;
 
     @Override
-    public List<LoginUser> getUserList() {
-        return userMapper.getUserList();
+    public Integer insert(LoginUser user) {
+        return userMapper.insert(user);
     }
 
     @Override
-    public Integer update(Date date) {
-        return userMapper.update(date);
+    public LoginUser getUserByName(String name) {
+        return userMapper.getUserByName(name);
     }
 }

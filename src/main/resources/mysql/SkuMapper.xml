@@ -2,12 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sale.panda.dao.SkuMapper">
 
-    <select id="getUserList" resultType="com.sale.panda.dao.entity.Sku">
-        select id,user_name as name,password from user;
-    </select>
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.Sku">
+       insert into sku
+       (sku_name,
+        spu_id,
+        size,
+        color,
+        feature1,
+        feature2,
+        feature3,
+        count)
+        VALUES
+        (#{skuName},
+        #{spuId},
+        #{size},
+        #{color},
+        #{feature1},
+        #{feature2},
+        #{feature3},
+        #{count})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sku
+        (sku_name,
+        spu_id,
+        size,
+        color,
+        feature1,
+        feature2,
+        feature3,
+        count)
+        VALUES
+        <foreach collection="list" item="good" separator=",">
+            (#{good.skuName},
+            #{good.spuId},
+            #{good.size},
+            #{good.color},
+            #{good.feature1},
+            #{good.feature2},
+            #{good.feature3},
+            #{good.count})
+        </foreach>
+    </insert>
     
-    <update id="update" parameterType="java.util.Date">
-        update user set created_time = #{date} where id =1;
+    <update id="update" parameterType="com.sale.panda.dao.entity.Sku">
+        update sku set updated_time = now()
+        <if test=" skuName !=null and skuName !=''">
+            ,sku_name = #{skuName}
+        </if>
+        <if test=" spuId !=null">
+            ,spu_id = #{spuId}
+        </if>
+        <if test=" size !=null and size !=''">
+            ,size = #{size}
+        </if>
+        <if test=" color !=null and color !=''">
+            ,color = #{color}
+        </if>
+        <if test=" feature1 !=null and feature1 !=''">
+            ,feature1 = #{feature1}
+        </if>
+        <if test=" feature2 !=null and feature2 !=''">
+            ,feature2 = #{feature2}
+        </if>
+        <if test=" feature3 !=null and feature3 !=''">
+            ,feature3 = #{feature3}
+        </if>
+        where sku_id =#{skuId};
     </update>
 
 </mapper>

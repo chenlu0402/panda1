@@ -8,7 +8,8 @@
 package com.sale.panda.dao.entity;
 
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -18,7 +19,8 @@ import lombok.experimental.FieldDefaults;
  * @version V1.0
  * @since 2019-12-28 18:23
  */
-@Data
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PageQuery {
 
@@ -26,8 +28,10 @@ public class PageQuery {
 
     Integer pageSize;
 
-    Integer getOffset() {
+    Integer offset = 0;
+
+    /*Integer getOffset() {
         return (this.pageNo - 1) * pageSize;
-    }
+    }*/
 
 }
