@@ -24,14 +24,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PageQuery {
 
-    Integer pageNo;
+    Integer page;
 
-    Integer pageSize;
+    Integer limit;
 
-    Integer offset = 0;
+    //Integer offset = 0;
 
-    /*Integer getOffset() {
-        return (this.pageNo - 1) * pageSize;
-    }*/
+    Integer getOffset() {
+        return (this.page - 1) * limit;
+    }
 
 }

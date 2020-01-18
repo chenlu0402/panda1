@@ -28,4 +28,5 @@ public class SpuModel {
     BigDecimal inPrice;
     BigDecimal salePrice;
     Integer totalCount;
+    Integer isDeleted;
 }

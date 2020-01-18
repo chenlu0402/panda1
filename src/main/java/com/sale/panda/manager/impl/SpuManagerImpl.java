@@ -11,6 +11,7 @@ import com.sale.panda.dao.SpuMapper;
 import com.sale.panda.dao.entity.Spu;
 import com.sale.panda.dao.entity.SpuPageQuery;
 import com.sale.panda.manager.SpuManager;
+import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
 
@@ -47,8 +48,9 @@ public class SpuManagerImpl implements SpuManager {
     }
 
     @Override
-    public List<Spu> pageQuery(SpuPageQuery pageQuery) {
+    public PageQueryResult<List<Spu>> pageQuery(SpuPageQuery pageQuery) {
         List<Spu> result = spuMapper.pageQuery(pageQuery);
-        return result;
+        Integer total = spuMapper.count(pageQuery);
+        return new PageQueryResult<List<Spu>>(total,result);
     }
 }

@@ -16,6 +16,7 @@ import com.sale.panda.dao.entity.Spu;
 import com.sale.panda.dao.entity.SpuPageQuery;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.SpuManager;
+import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
 
@@ -58,6 +59,14 @@ public class GoodsController {
         return BaseResult.buildSuccess();
     }
 
+    @PostMapping("/updateSpu")
+    public BaseResult updateSpu(@RequestBody SpuModel spuModel){
+        Spu spu = new Spu();
+        BeanUtils.copyProperties(spuModel,spu);
+        spuManager.update(spu);
+        return BaseResult.buildSuccess();
+    }
+
     @PostMapping("/addSku")
     public BaseResult addSku(@RequestBody SkuModel skuModel){
         Sku sku = new Sku();
@@ -70,7 +79,8 @@ public class GoodsController {
     public BaseResult<List<Spu>> pageQuerySpu(@RequestBody SpuPageQueryModel spuModel){
         SpuPageQuery pageQuery = new SpuPageQuery();
         BeanUtils.copyProperties(spuModel,pageQuery);
-        return BaseResult.buildSuccess(spuManager.pageQuery(pageQuery));
+        PageQueryResult<List<Spu>> result = spuManager.pageQuery(pageQuery);
+        return BaseResult.buildSuccess(result.getData(),result.getTotal());
     }
 
 }

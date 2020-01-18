@@ -44,6 +44,9 @@
         <if test="totalCount !=null">
             ,total_count = #{totalCount}
         </if>
+        <if test="isDeleted !=null">
+            ,is_deleted = #{isDeleted}
+        </if>
         where spu_id = #{spuId};
     </update>
     
@@ -58,11 +61,23 @@
             updated_time
         from spu
         <where>
+            is_deleted = 0
             <if test="spuName !=null and spuName != ''">
-                spu_name like "%"#{spuName}"%"
+                and spu_name like "%"#{spuName}"%"
             </if>
         </where>
-        limit #{offset},#{pageSize}
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="count" parameterType="com.sale.panda.dao.entity.SpuPageQuery" resultType="java.lang.Integer">
+        select count(1)
+        from spu
+        <where>
+            is_deleted = 0
+            <if test="spuName !=null and spuName != ''">
+                and spu_name like "%"#{spuName}"%"
+            </if>
+        </where>
     </select>
 
 </mapper>

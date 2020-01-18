@@ -9,6 +9,7 @@ package com.sale.panda.manager;
 
 import com.sale.panda.dao.entity.Spu;
 import com.sale.panda.dao.entity.SpuPageQuery;
+import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
 
@@ -27,5 +28,5 @@ public interface SpuManager {
 
     Integer update(Spu spu);
 
-    List<Spu> pageQuery(SpuPageQuery pageQuery);
+    PageQueryResult<List<Spu>> pageQuery(SpuPageQuery pageQuery);
 }

@@ -34,5 +34,6 @@ public interface SpuMapper {
 
     List<Spu> pageQuery(SpuPageQuery pageQuery);
 
+    Integer count(SpuPageQuery pageQuery);
 
 }

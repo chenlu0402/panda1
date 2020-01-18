@@ -18,9 +18,11 @@ import com.sale.panda.manager.utils.ResponseStatus;
  */
 public class BaseResult<T> {
 
-    private int code = 200;
+    private int code = 0;
 
     private String msg = "SUCCESS";
+
+    private int count;
 
     private T data;
 
@@ -48,26 +50,42 @@ public class BaseResult<T> {
         this.data = data;
     }
 
-    BaseResult(){
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    BaseResult() {
 
     }
-    BaseResult(int code,String msg,T data){
+
+    BaseResult(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public static BaseResult buildSuccess(){
+    public static BaseResult buildSuccess() {
         return new BaseResult();
     }
 
-    public static BaseResult buildSuccess(Object data){
+    public static BaseResult buildSuccess(Object data, Integer count) {
+        BaseResult result = new BaseResult();
+        result.setData(data);
+        result.setCount(count);
+        return result;
+    }
+
+    public static BaseResult buildSuccess(Object data) {
         BaseResult result = new BaseResult();
         result.setData(data);
         return result;
     }
 
-    public static BaseResult buildFail(ResponseStatus status){
-        return new BaseResult(status.getCode(),status.getDesc(),null);
+    public static BaseResult buildFail(ResponseStatus status) {
+        return new BaseResult(status.getCode(), status.getDesc(), null);
     }
 }
