@@ -31,5 +31,6 @@ public interface SkuMapper {
 
     Integer batchUpdateByIds(Sku sku);
 
+    List<Sku> listSkuBySpuId(Integer spuId);
 
 }

@@ -43,4 +43,9 @@ public class SkuManagerImpl implements SkuManager{
     public Integer update(Sku sku) {
         return skuMapper.update(sku);
     }
+
+    @Override
+    public List<Sku> listSkuBySpuId(Integer spuId) {
+        return skuMapper.listSkuBySpuId(spuId);
+    }
 }

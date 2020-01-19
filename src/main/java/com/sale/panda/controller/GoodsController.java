@@ -18,16 +18,13 @@ import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.SpuManager;
 import com.sale.panda.manager.entity.PageQueryResult;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 商品相关
@@ -81,6 +78,11 @@ public class GoodsController {
         BeanUtils.copyProperties(spuModel,pageQuery);
         PageQueryResult<List<Spu>> result = spuManager.pageQuery(pageQuery);
         return BaseResult.buildSuccess(result.getData(),result.getTotal());
+    }
+
+    @GetMapping("/listSkuBySpuId")
+    public BaseResult<List<Sku>> listSkuBySpuId(@RequestParam(required = true) Integer spuId){
+        return BaseResult.buildSuccess(skuManager.listSkuBySpuId(spuId));
     }
 
 }

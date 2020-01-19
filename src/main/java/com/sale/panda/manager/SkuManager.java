@@ -25,4 +25,6 @@ public interface SkuManager {
     Integer batchInsert(List<Sku> goods);
 
     Integer update(Sku sku);
+
+    List<Sku> listSkuBySpuId(Integer spuId);
 }
