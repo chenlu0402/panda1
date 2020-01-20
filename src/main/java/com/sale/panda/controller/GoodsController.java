@@ -16,15 +16,20 @@ import com.sale.panda.dao.entity.Spu;
 import com.sale.panda.dao.entity.SpuPageQuery;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.SpuManager;
+import com.sale.panda.manager.constants.ResponseStatus;
 import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.sale.panda.manager.constants.ResponseStatus;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -90,7 +95,7 @@ public class GoodsController {
     }
 
     @GetMapping("/listSkuBySpuId")
-    public BaseResult<List<Sku>> listSkuBySpuId(@RequestParam(required = true) Integer spuId){
+    public BaseResult<List<Sku>> listSkuBySpuId(@RequestParam(required = true) Integer spuId,Integer page,Integer limit){
         return BaseResult.buildSuccess(skuManager.listSkuBySpuId(spuId));
     }
 

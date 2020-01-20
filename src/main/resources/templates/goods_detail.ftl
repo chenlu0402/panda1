@@ -18,6 +18,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
+            <input type="hidden" id="spuId" value="${spuId}">
             <button class="layui-btn layuiadmin-btn-replys" lay-submit
                     lay-filter="add_detail">
                 添加明细
@@ -80,13 +81,13 @@
                 , form = layui.form
                 , table = layui.table;
 
+        var spuId = $('#spuId').val();
         table.render({
             id: 'goods_detail_list'
             , elem: '#goods_detail_list'
-            , height: 312
-            , url: '/goods/listSkuBySpuId' //数据接口
+            , url: '/goods/listSkuBySpuId'//数据接口
+            , where:{spuId:spuId}
             , contentType: 'application/json'
-            , page: true //开启分页
             , cols: [[ //表头
                 {field: 'skuId', title: '编号', fixed: 'left'}
                 , {field: 'size', title: '尺寸'}
@@ -149,11 +150,11 @@
                 });
             } else if (layEvent === 'edit') { //编辑
                 form.val("edit_detail", {//formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
-                    "spuId":data.spuId
-                    ,"spuName": data.spuName // "name": "value"
-                    ,"inPrice":data.inPrice
-                    ,"salePrice":data.salePrice
-                    ,"totalCount": data.totalCount
+                    "size":data.size
+                    ,"color": data.color // "name": "value"
+                    ,"feature1":data.feature1
+                    ,"feature2":data.feature2
+                    ,"count": data.count
                 });
                 layer.open({
                     type: 1,

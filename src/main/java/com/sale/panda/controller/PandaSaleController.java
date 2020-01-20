@@ -5,7 +5,9 @@ import com.sale.panda.manager.SpuManager;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author: chenlu
@@ -39,7 +41,8 @@ public class PandaSaleController {
     }
 
     @RequestMapping("/goods_detail")
-    public String goodsDetail(){
+    public String goodsDetail(ModelMap model,@RequestParam Integer spuId){
+        model.put("spuId",spuId);
         return "/goods_detail";
     }
 

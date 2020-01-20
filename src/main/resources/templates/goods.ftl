@@ -176,8 +176,7 @@
             var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
 
             if (layEvent === 'detail') { //查看
-                //do somehing
-                alert('detail');
+                location.href = "/goods_detail?spuId="+data.spuId;
             } else if (layEvent === 'del') { //删除
                 layer.confirm('确认删除？', function (index) {
                     var spuId = data.spuId;
