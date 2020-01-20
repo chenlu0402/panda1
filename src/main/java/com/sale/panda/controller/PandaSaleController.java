@@ -38,6 +38,11 @@ public class PandaSaleController {
         return "/goods";
     }
 
+    @RequestMapping("/goods_detail")
+    public String goodsDetail(){
+        return "/goods_detail";
+    }
+
     @RequestMapping("/testHome")
     public String testHome(){
         return "/test_home";

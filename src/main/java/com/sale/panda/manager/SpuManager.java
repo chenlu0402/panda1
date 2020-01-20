@@ -10,6 +10,7 @@ package com.sale.panda.manager;
 import com.sale.panda.dao.entity.Spu;
 import com.sale.panda.dao.entity.SpuPageQuery;
 import com.sale.panda.manager.entity.PageQueryResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ import java.util.List;
  * @since 2019-12-28 17:37
  */
 public interface SpuManager {
+
+    void handleUpload(MultipartFile file);
 
     Integer insert(Spu spu);
 

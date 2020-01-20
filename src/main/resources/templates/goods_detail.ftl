@@ -17,29 +17,11 @@
 
 <div class="layui-fluid">
     <div class="layui-card">
-        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">货物名称</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="spuName" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-replys" data-type="reload" lay-submit
-                            lay-filter="LAY-app-forumreply-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                    </button>
-                </div>
-                <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-replys" lay-submit
-                            lay-filter="add_goods">
-                        添加商品
-                    </button>
-                </div>
-            </div>
-        </div>
         <div class="layui-card-body">
+            <button class="layui-btn layuiadmin-btn-replys" lay-submit
+                    lay-filter="add_detail">
+                添加明细
+            </button>
             <table id="goods_detail_list" lay-filter="goods_detail_list"></table>
         </div>
     </div>
@@ -117,15 +99,15 @@
         });
 
         //监听添加
-        form.on('submit(add_goods)', function (data) {
+        form.on('submit(add_detail)', function (data) {
             layer.open({
                 type: 1,
-                title:'添加商品',
+                title:'添加商品明细',
                 btn: ['确认', '取消'],
                 yes: function(index, layero){
                     var formVal = form.val("edit_detail");
                     $.ajax({
-                        url: "/goods/addSpu",
+                        url: "/goods/addSku",
                         type:'POST',
                         data:JSON.stringify(formVal),
                         contentType:'application/json',
@@ -150,12 +132,12 @@
             var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
 
             if (layEvent === 'del') { //删除
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('确认删除？', function (index) {
                     var spuId = data.spuId;
                     $.ajax({
-                        url: "/goods/updateSpu",
+                        url: "/goods/updateSku",
                         type:'POST',
-                        data:JSON.stringify({"spuId":spuId,"isDeleted":1}),
+                        data:JSON.stringify({"skuId":skuId,"isDeleted":1}),
                         contentType:'application/json',
                         dataType:'json',
                         success: function(){
@@ -175,12 +157,12 @@
                 });
                 layer.open({
                     type: 1,
-                    title:'修改商品',
+                    title:'修改商品明细',
                     btn: ['确认', '取消'],
                     yes: function(index, layero){
                         var formVal = form.val("edit_detail");
                         $.ajax({
-                            url: "/goods/updateSpu",
+                            url: "/goods/updateSku",
                             type:'POST',
                             data:JSON.stringify(formVal),
                             contentType:'application/json',

@@ -32,9 +32,11 @@
                     </button>
                 </div>
                 <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-replys" lay-submit
-                            lay-filter="add_goods">
+                    <button class="layui-btn" lay-submit lay-filter="add_goods">
                         添加商品
+                    </button>
+                    <button type="button" class="layui-btn" id="upload">
+                       批量导入
                     </button>
                 </div>
             </div>
@@ -87,15 +89,33 @@
         base: '/layui/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
+    }).use(['index', 'table','upload'], function () {
         var $ = layui.$
                 , form = layui.form
-                , table = layui.table;
+                , table = layui.table
+                ,upload = layui.upload;
+
+        upload.render({
+            elem: '#upload' //绑定元素
+            ,url: '/goods/upload' //上传接口
+            ,accept: 'file'
+            ,size: 1024
+            ,done: function(res){
+                if(res.code == 0){
+                    table.reload('LAY-app-forumreply-list');
+                    layer.msg('导入成功！');
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
 
         table.render({
             id: 'LAY-app-forumreply-list'
             , elem: '#LAY-app-forumreply-list'
-            , height: 312
             , url: '/goods/pageQuerySpu' //数据接口
             , method: 'post'
             , contentType: 'application/json'
@@ -108,7 +128,7 @@
                 , {field: 'totalCount', title: '数量', sort: true}
                 , {field: 'createdTime', title: '插入时间', width: 180, sort: true}
                 , {field: 'updatedTime', title: '更新时间', width: 180, sort: true}
-                , {fixed: 'right', width: 150, align: 'center', toolbar: '#bar'}
+                , {fixed: 'right', width: 180, align: 'center', toolbar: '#bar'}
             ]]
         });
 
@@ -159,7 +179,7 @@
                 //do somehing
                 alert('detail');
             } else if (layEvent === 'del') { //删除
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('确认删除？', function (index) {
                     var spuId = data.spuId;
                     $.ajax({
                         url: "/goods/updateSpu",

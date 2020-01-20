@@ -18,13 +18,14 @@ import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.SpuManager;
 import com.sale.panda.manager.entity.PageQueryResult;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.sale.panda.manager.constants.ResponseStatus;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 商品相关
@@ -64,6 +65,14 @@ public class GoodsController {
         return BaseResult.buildSuccess();
     }
 
+    @PostMapping("/updateSku")
+    public BaseResult updateSku(@RequestBody SkuModel skuModel){
+        Sku sku = new Sku();
+        BeanUtils.copyProperties(skuModel,sku);
+        skuManager.update(sku);
+        return BaseResult.buildSuccess();
+    }
+
     @PostMapping("/addSku")
     public BaseResult addSku(@RequestBody SkuModel skuModel){
         Sku sku = new Sku();
@@ -83,6 +92,16 @@ public class GoodsController {
     @GetMapping("/listSkuBySpuId")
     public BaseResult<List<Sku>> listSkuBySpuId(@RequestParam(required = true) Integer spuId){
         return BaseResult.buildSuccess(skuManager.listSkuBySpuId(spuId));
+    }
+
+    @PostMapping("/upload")
+    public BaseResult upload(@RequestBody MultipartFile file){
+        String fileName = file.getOriginalFilename();
+        if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
+            BaseResult.buildFail(ResponseStatus.FILE_TYPE_NOT_SUPPORT);
+        }
+        spuManager.handleUpload(file);
+       return BaseResult.buildSuccess();
     }
 
 }

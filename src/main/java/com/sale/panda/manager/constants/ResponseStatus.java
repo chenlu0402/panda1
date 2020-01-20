@@ -5,7 +5,7 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the terms of the license agreement you entered into with GuaHao.com.
  */
-package com.sale.panda.manager.utils;
+package com.sale.panda.manager.constants;
 
 /**
  * 状态
@@ -15,6 +15,11 @@ package com.sale.panda.manager.utils;
  * @since 2020-01-05 15:40
  */
 public enum ResponseStatus {
+
+    SUCCESS(0,"成功！"),
+    SERVER_ERROR(500,"服务器内部错误！"),
+    FILE_TYPE_NOT_SUPPORT(501,"上传文件格式不正确,仅支持excel文件！"),
+    EMPTY_UPLOAD(502,"导入的数据为空！"),
 
     ;
 

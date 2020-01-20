@@ -7,7 +7,7 @@
  */
 package com.sale.panda.controller.model;
 
-import com.sale.panda.manager.utils.ResponseStatus;
+import com.sale.panda.manager.constants.ResponseStatus;
 
 /**
  * 结果返回类
@@ -87,5 +87,9 @@ public class BaseResult<T> {
 
     public static BaseResult buildFail(ResponseStatus status) {
         return new BaseResult(status.getCode(), status.getDesc(), null);
+    }
+
+    public static BaseResult buildFail(int code,String msg) {
+        return new BaseResult(code, msg, null);
     }
 }
