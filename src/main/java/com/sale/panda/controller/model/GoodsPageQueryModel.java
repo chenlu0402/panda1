@@ -20,8 +20,10 @@ import lombok.experimental.FieldDefaults;
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SpuPageQueryModel {
+public class GoodsPageQueryModel {
     String spuName;
     Integer limit = 10;
     Integer page = 1;
+    Integer type;
+    String datetimeRange;
 }

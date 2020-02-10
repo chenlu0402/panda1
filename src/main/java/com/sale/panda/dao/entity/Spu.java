@@ -25,9 +25,8 @@ import lombok.experimental.FieldDefaults;
 public class Spu {
     Integer spuId;
     String spuName;
-    BigDecimal inPrice;
     BigDecimal salePrice;
-    Integer totalCount;
+    Integer type;
     Integer isDeleted;
     String createdTime;
     String updatedTime;

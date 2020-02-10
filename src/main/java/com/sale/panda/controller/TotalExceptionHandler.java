@@ -22,6 +22,7 @@ public class TotalExceptionHandler {
             ServiceException se = (ServiceException)e;
             return BaseResult.buildFail(se.getCode(), se.getMessage());
         }
+        log.error(e.getMessage());
         return BaseResult.buildFail(ResponseStatus.SERVER_ERROR);
     }
 }

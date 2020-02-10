@@ -18,7 +18,6 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
-            <input type="hidden" id="spuId" value="${spuId}">
             <button class="layui-btn layuiadmin-btn-replys" lay-submit
                     lay-filter="add_detail">
                 添加明细
@@ -28,7 +27,8 @@
     </div>
 </div>
 <div class="layui-form" lay-filter="edit_detail" id="edit_detail" style="padding: 20px 30px 0 0;display: none">
-    <input type="hidden" name="spuId" value="">
+    <input type="hidden" id="spuId" value="${spuId}">
+    <input type="hidden" name="skuId" value="">
     <div class="layui-form-item">
         <label class="layui-form-label">尺寸</label>
         <div class="layui-input-block">
@@ -76,7 +76,7 @@
         base: '/layui/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
+    }).use(['index', 'table','form'], function () {
         var $ = layui.$
                 , form = layui.form
                 , table = layui.table;
@@ -87,7 +87,7 @@
             , elem: '#goods_detail_list'
             , url: '/goods/listSkuBySpuId'//数据接口
             , where:{spuId:spuId}
-            , contentType: 'application/json'
+            //, contentType: 'application/json'
             , cols: [[ //表头
                 {field: 'skuId', title: '编号', fixed: 'left'}
                 , {field: 'size', title: '尺寸'}
@@ -101,6 +101,13 @@
 
         //监听添加
         form.on('submit(add_detail)', function (data) {
+            form.val("edit_detail", {
+                "size":""
+                ,"color": ""
+                ,"feature1":""
+                ,"feature2":""
+                ,"count": ""
+            });
             layer.open({
                 type: 1,
                 title:'添加商品明细',
@@ -134,7 +141,7 @@
 
             if (layEvent === 'del') { //删除
                 layer.confirm('确认删除？', function (index) {
-                    var spuId = data.spuId;
+                    var skuId = data.skuId;
                     $.ajax({
                         url: "/goods/updateSku",
                         type:'POST',
@@ -149,9 +156,10 @@
                     });
                 });
             } else if (layEvent === 'edit') { //编辑
-                form.val("edit_detail", {//formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
-                    "size":data.size
-                    ,"color": data.color // "name": "value"
+                form.val("edit_detail", {
+                    "skuId":data.skuId
+                    ,"size":data.size
+                    ,"color": data.color
                     ,"feature1":data.feature1
                     ,"feature2":data.feature2
                     ,"count": data.count

@@ -4,80 +4,47 @@
 
     <insert id="insert" parameterType="com.sale.panda.dao.entity.Spu">
         insert into spu
-        (spu_name,
-        in_price,
+        (spu_id,
+        spu_name,
         sale_price,
-        total_count)
+        type)
         VALUES
-        (#{spuName},
-        #{inPrice},
+        (#{spuId},
+        #{spuName},
         #{salePrice},
-        #{totalCount})
+        #{type})
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
         insert into spu
-        (spu_name,
-        in_price,
+        (spu_id,
+        spu_name,
         sale_price,
-        total_count)
+        type)
         VALUES
         <foreach collection="list" item="spu" separator=",">
-            (#{spu.spuName},
-            #{spu.inPrice},
+            (#{spu.spuId},
+            #{spu.spuName},
             #{spu.salePrice},
-            #{spu.totalCount})
+            #{spu.type})
         </foreach>
     </insert>
     
     <update id="update" parameterType="com.sale.panda.dao.entity.Spu">
         update spu set updated_time = now()
-        <if test="spuName !=null and spuName !=''">
+        <if test="spuName !=null and spuName != ''">
             ,spu_name = #{spuName}
-        </if>
-        <if test="inPrice !=null">
-            ,in_price = #{inPrice}
         </if>
         <if test="salePrice !=null">
             ,sale_price = #{salePrice}
         </if>
-        <if test="totalCount !=null">
-            ,total_count = #{totalCount}
+        <if test="type !=null">
+            ,type = #{type}
         </if>
         <if test="isDeleted !=null">
             ,is_deleted = #{isDeleted}
         </if>
         where spu_id = #{spuId};
     </update>
-    
-    <select id="pageQuery" parameterType="com.sale.panda.dao.entity.SpuPageQuery" resultType="com.sale.panda.dao.entity.Spu">
-        select
-            spu_id,
-            spu_name,
-            in_price,
-            sale_price,
-            total_count,
-            created_time,
-            updated_time
-        from spu
-        <where>
-            is_deleted = 0
-            <if test="spuName !=null and spuName != ''">
-                and spu_name like "%"#{spuName}"%"
-            </if>
-        </where>
-        limit #{offset},#{limit}
-    </select>
-
-    <select id="count" parameterType="com.sale.panda.dao.entity.SpuPageQuery" resultType="java.lang.Integer">
-        select count(1)
-        from spu
-        <where>
-            is_deleted = 0
-            <if test="spuName !=null and spuName != ''">
-                and spu_name like "%"#{spuName}"%"
-            </if>
-        </where>
-    </select>
 
 </mapper>

@@ -1,13 +1,14 @@
 package com.sale.panda.controller;
 
+import com.sale.panda.dao.entity.GoodsType;
+import com.sale.panda.manager.GoodsTypeManager;
 import com.sale.panda.manager.SpuManager;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author: chenlu
@@ -19,6 +20,9 @@ public class PandaSaleController {
 
     @Resource
     private SpuManager spuManager;
+
+    @Resource
+    private GoodsTypeManager goodsTypeManager;
 
     @RequestMapping("/")
     public String index(){
@@ -35,20 +39,28 @@ public class PandaSaleController {
         return "/remain";
     }
 
-    @RequestMapping("/goods")
-    public String goods(){
-        return "/goods";
+    @RequestMapping("/goods_list_page")
+    public String goods(ModelMap model){
+        List<GoodsType> goodsTypeList = goodsTypeManager.listAllGoodsType();
+        model.put("goodsTypeList",goodsTypeList);
+        return "/goods_list";
     }
 
-    @RequestMapping("/goods_detail")
-    public String goodsDetail(ModelMap model,@RequestParam Integer spuId){
-        model.put("spuId",spuId);
-        return "/goods_detail";
+    @RequestMapping("/goods_import_detail_page")
+    public String goodsDetail(ModelMap model){
+        List<GoodsType> goodsTypeList = goodsTypeManager.listAllGoodsType();
+        model.put("goodsTypeList",goodsTypeList);
+        return "/goods_import_detail";
     }
 
-    @RequestMapping("/testHome")
-    public String testHome(){
-        return "/test_home";
+    @RequestMapping("/sale_page")
+    public String sale(){
+        return "/sale";
+    }
+
+    @RequestMapping("/goods_add_page")
+    public String addGoods(){
+        return "/goods_add";
     }
 
 }

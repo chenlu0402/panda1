@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sale.panda.dao.GoodsImportDetailMapper">
+
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.Goods">
+       insert into goods_import_detail
+       (sku_id,
+       spu_id,
+       sku_name,
+        size,
+        color,
+        type,
+        feature1,
+        feature2,
+        feature3,
+        in_price,
+        sale_price,
+        count)
+        VALUES
+        (#{skuId},
+        #{spuId},
+        #{spuName},
+        #{size},
+        #{color},
+        #{type},
+        #{feature1},
+        #{feature2},
+        #{feature3},
+        #{inPrice},
+        #{salePrice},
+        #{count})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into goods_import_detail
+        (sku_id,
+        spu_id,
+        spu_name,
+        size,
+        color,
+        type,
+        feature1,
+        feature2,
+        feature3,
+        in_price,
+        sale_price,
+        count)
+        VALUES
+        <foreach collection="list" item="good" separator=",">
+            (#{good.skuId}
+            #{good.spuId},
+            #{good.spuName},
+            #{good.size},
+            #{good.color},
+            #{good.type},
+            #{good.feature1},
+            #{good.feature2},
+            #{good.feature3},
+            #{good.inPrice},
+            #{good.salePrice},
+            #{good.count})
+        </foreach>
+    </insert>
+    
+    <update id="update" parameterType="com.sale.panda.dao.entity.Goods">
+        update goods_import_detail set updated_time = now()
+        <if test=" spuName !=null and spuName !=''">
+            ,spu_name = #{spuName}
+        </if>
+        <if test=" size !=null and size !=''">
+            ,size = #{size}
+        </if>
+        <if test=" color !=null and color !=''">
+            ,color = #{color}
+        </if>
+        <if test=" type !=null">
+            ,type = #{type}
+        </if>
+        <if test=" feature1 !=null and feature1 !=''">
+            ,feature1 = #{feature1}
+        </if>
+        <if test=" feature2 !=null and feature2 !=''">
+            ,feature2 = #{feature2}
+        </if>
+        <if test=" feature3 !=null and feature3 !=''">
+            ,feature3 = #{feature3}
+        </if>
+        <if test="count !=null">
+            ,count = #{count}
+        </if>
+        <if test=" inPrice !=null ">
+            ,in_price = #{inPrice}
+        </if>
+        <if test=" salePrice !=null ">
+            ,sale_price = #{salePrice}
+        </if>
+        <if test=" isDeleted !=null">
+            ,is_deleted = #{isDeleted}
+        </if>
+        where sku_id =#{skuId};
+    </update>
+
+    <select id="pageQuery" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="com.sale.panda.dao.entity.Goods">
+        select
+            sku_id,
+            spu_id,
+            spu_name,
+            size,
+            color,
+            type,
+            b.type_name,
+            feature1,
+            feature2,
+            feature3,
+            in_price,
+            sale_price,
+            count,
+            a.created_time,
+            a.updated_time
+            from goods_import_detail a,goods_type b
+        where a.type = b.id and a.is_deleted = 0
+        <if test="spuName !=null and spuName != ''">
+            and spu_name like "%"#{spuName}"%"
+        </if>
+        <if test="type !=null">
+            and type = #{type}
+        </if>
+        <if test="createdTimeStart !=null and createdTimeStart !=''">
+            and a.created_time &gt;= #{createdTimeStart}
+        </if>
+        <if test="createdTimeEnd !=null and createdTimeEnd !=''">
+            and a.created_time &lt;= #{createdTimeEnd}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="count" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="java.lang.Integer">
+        select
+        count(1)
+        from goods_import_detail a,goods_type b
+        where a.type = b.id and a.is_deleted = 0
+        <if test="spuName !=null and spuName != ''">
+            and spu_name like "%"#{spuName}"%"
+        </if>
+        <if test="type !=null">
+            and type = #{type}
+        </if>
+        <if test="createdTimeStart !=null and createdTimeStart !=''">
+            and a.created_time &lt;= #{createdTimeStart}
+        </if>
+        <if test="createdTimeEnd !=null and createdTimeEnd !=''">
+            and a.created_time &gt;= #{createdTimeEnd}
+        </if>
+    </select>
+</mapper>

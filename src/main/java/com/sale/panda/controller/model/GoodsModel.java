@@ -5,22 +5,33 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the terms of the license agreement you entered into with GuaHao.com.
  */
-package com.sale.panda.dao.entity;
+package com.sale.panda.controller.model;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 /**
- * TODO
+ * 货物
  *
  * @author chenlu
  * @version V1.0
- * @since 2019-12-28 18:22
+ * @since 2019-12-28 09:51
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SpuPageQuery extends PageQuery{
-
+public class GoodsModel {
+    Integer skuId;
     String spuName;
+    String spuId;
+    Integer type;
+    String size;
+    String color;
+    String feature1;
+    String feature2;
+    String feature3;
+    Integer count;
+    String inPrice;
+    String salePrice;
+    Integer isDeleted;
 }

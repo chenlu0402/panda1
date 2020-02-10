@@ -8,11 +8,9 @@
 package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.Spu;
-import com.sale.panda.dao.entity.SpuPageQuery;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 商品spu
@@ -29,11 +27,5 @@ public interface SpuMapper {
     Integer batchInsert(List<Spu> goods);
 
     Integer update(Spu spu);
-
-    Integer batchUpdateByIds(Spu spu);
-
-    List<Spu> pageQuery(SpuPageQuery pageQuery);
-
-    Integer count(SpuPageQuery pageQuery);
 
 }

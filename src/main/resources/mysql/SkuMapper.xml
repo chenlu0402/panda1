@@ -4,8 +4,7 @@
 
     <insert id="insert" parameterType="com.sale.panda.dao.entity.Sku">
        insert into sku
-       (sku_name,
-        spu_id,
+       (spu_id,
         size,
         color,
         feature1,
@@ -13,8 +12,7 @@
         feature3,
         count)
         VALUES
-        (#{skuName},
-        #{spuId},
+        (#{spuId},
         #{size},
         #{color},
         #{feature1},
@@ -25,8 +23,7 @@
 
     <insert id="batchInsert" parameterType="java.util.List">
         insert into sku
-        (sku_name,
-        spu_id,
+        (spu_id,
         size,
         color,
         feature1,
@@ -35,8 +32,7 @@
         count)
         VALUES
         <foreach collection="list" item="good" separator=",">
-            (#{good.skuName},
-            #{good.spuId},
+            (#{good.spuId},
             #{good.size},
             #{good.color},
             #{good.feature1},
@@ -48,9 +44,6 @@
     
     <update id="update" parameterType="com.sale.panda.dao.entity.Sku">
         update sku set updated_time = now()
-        <if test=" skuName !=null and skuName !=''">
-            ,sku_name = #{skuName}
-        </if>
         <if test=" spuId !=null">
             ,spu_id = #{spuId}
         </if>
@@ -72,18 +65,65 @@
         <if test=" isDeleted !=null">
             ,is_deleted = #{isDeleted}
         </if>
+        <if test=" count !=null">
+            ,count = count + #{count}
+        </if>
         where sku_id =#{skuId};
     </update>
 
-    <select id="listSkuBySpuId" resultType="com.sale.panda.dao.entity.Sku" parameterType="java.lang.Integer">
+    <select id="pageQuery" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="com.sale.panda.dao.entity.Goods">
         select
-            size,
-            color,
-            feature1,
-            feature2,
-            feature3,
-            count
-            from sku
-        where spu_id = #{spuId}
+        p.spu_id,
+        p.spu_name,
+        p.sale_price,
+        g.type_name,
+        k.size,
+        k.color,
+        k.count,
+        k.feature1,
+        k.feature2,
+        k.feature3,
+        k.created_time,
+        k.updated_time
+        from spu p,sku k,goods_type g
+        where
+            p.spu_id = k.spu_id and p.type = g.id and p.is_deleted = 0 and k.is_deleted = 0
+            <if test="spuName !=null and spuName != ''">
+                and p.spu_name like "%"#{spuName}"%"
+            </if>
+            <if test="type !=null">
+                and p.type = #{type}
+            </if>
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="count" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="java.lang.Integer">
+        select count(1)
+        from spu p,sku k,goods_type g
+        where
+            p.spu_id = k.spu_id and p.type = g.id and p.is_deleted = 0 and k.is_deleted = 0
+            <if test="spuName !=null and spuName != ''">
+                and p.spu_name like "%"#{spuName}"%"
+            </if>
+            <if test="type !=null">
+                and p.type = #{type}
+            </if>
+    </select>
+
+    <select id="listGoodsBySpuId" resultType="com.sale.panda.dao.entity.Goods" parameterType="java.lang.Integer">
+        select
+            p.spu_id,
+            k.sku_id,
+            p.spu_name,
+            p.sale_price,
+            p.type,
+            k.size,
+            k.color,
+            k.feature1,
+            k.feature2,
+            k.feature3
+        from spu p,sku k
+        where
+            p.spu_id = k.spu_id and p.is_deleted = 0 and k.is_deleted = 0 and p.spu_id = #{spuId}
     </select>
 </mapper>

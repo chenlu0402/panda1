@@ -5,28 +5,28 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the terms of the license agreement you entered into with GuaHao.com.
  */
-package com.sale.panda.controller.model;
-
-import java.math.BigDecimal;
+package com.sale.panda.dao.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 /**
- * 商品spu
+ * TODO
  *
  * @author chenlu
  * @version V1.0
- * @since 2019-12-28 16:43
+ * @since 2019-12-28 18:22
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SpuModel {
-    Integer spuId;
+public class GoodsPageQuery extends PageQuery{
+
     String spuName;
-    BigDecimal inPrice;
-    BigDecimal salePrice;
-    Integer totalCount;
-    Integer isDeleted;
+
+    Integer type;
+
+    String createdTimeStart;
+
+    String createdTimeEnd;
 }

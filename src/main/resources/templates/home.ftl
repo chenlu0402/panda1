@@ -25,11 +25,14 @@
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="仓储" lay-direction="2">
+                        <a href="javascript:;" lay-tips="库存列表" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
-                            <cite>仓储</cite>
+                            <cite>库存列表</cite>
                         </a>
-                        <a href="javascript:;" lay-tips="销售" lay-direction="3">
+                        <a href="javascript:;" lay-tips="库存录入" id="goods_import" lay-direction="3">
+                            <cite>库存录入</cite>
+                        </a>
+                        <a href="javascript:;" lay-tips="销售" id="sale" lay-direction="3">
                             <cite>销售</cite>
                         </a>
                     </li>
@@ -39,20 +42,6 @@
 
         <!-- 页面标签 -->
         <div class="layadmin-pagetabs" id="LAY_app_tabs">
-            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
-            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
-            <div class="layui-icon layadmin-tabs-control layui-icon-down">
-                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
-                    <li class="layui-nav-item" lay-unselect>
-                        <a href="javascript:;"></a>
-                        <dl class="layui-nav-child layui-anim-fadein">
-                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
-                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
-                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
-                        </dl>
-                    </li>
-                </ul>
-            </div>
             <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
                 <ul class="layui-tab-title" id="LAY_app_tabsheader">
                     <li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
@@ -64,7 +53,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="/goods" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="/goods_list_page" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 
@@ -78,7 +67,16 @@
         base: '/layui/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use('index');
+    }).use('index',function () {
+
+        $('#sale').click(function () {
+            layui.index.openTabsPage("/sale_page", "商品销售");
+        });
+
+        $('#goods_import').click(function () {
+            layui.index.openTabsPage("/goods_import_detail_page", "库存录入");
+        });
+    });
 </script>
 </body>
 </html>

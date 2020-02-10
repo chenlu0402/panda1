@@ -18,15 +18,15 @@ public class IndexController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping("/login")
+    @RequestMapping("/loginPage")
     public String tologin(){
-        logger.info("定向登陆页");
+        //logger.info("定向登陆页");
         return "/login";
     }
 
-    @RequestMapping("/home")
+    @RequestMapping("/homePage")
     public String home(){
-        logger.info("定向主页");
+        //logger.info("定向主页");
         return "/home";
     }
 

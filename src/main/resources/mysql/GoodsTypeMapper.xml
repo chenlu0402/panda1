@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sale.panda.dao.GoodsTypeMapper">
+
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.GoodsType">
+        insert into goods_type
+        (type_name)
+        VALUES
+        (#{typeName})
+    </insert>
+    
+    <update id="update" parameterType="com.sale.panda.dao.entity.GoodsType">
+        update goods_type set updated_time = now()
+        <if test="typeName !=null and typeName != ''">
+            ,type_name = #{typeName}
+        </if>
+        where id = #{id};
+    </update>
+
+    <select id="pageQuery" parameterType="java.lang.String" resultType="com.sale.panda.dao.entity.GoodsType">
+        select id,
+               type_name,
+               created_time,
+               updated_time
+        from goods_type
+        where type_name like "%"#{typeName}"%"
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from goods_type where type_name like "%"#{typeName}"%"
+    </select>
+
+    <select id="listAllGoodsType" resultType="com.sale.panda.dao.entity.GoodsType">
+        select id,type_name from goods_type
+    </select>
+</mapper>

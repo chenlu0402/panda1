@@ -7,7 +7,10 @@
  */
 package com.sale.panda.manager;
 
+import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.Sku;
+import com.sale.panda.dao.entity.GoodsPageQuery;
+import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
 
@@ -26,5 +29,7 @@ public interface SkuManager {
 
     Integer update(Sku sku);
 
-    List<Sku> listSkuBySpuId(Integer spuId);
+    PageQueryResult<List<Goods>> pageQuery(GoodsPageQuery pageQuery);
+
+    List<Goods> listGoodsBySpuId(Integer spuId);
 }

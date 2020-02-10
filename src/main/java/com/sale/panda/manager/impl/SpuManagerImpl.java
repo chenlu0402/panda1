@@ -2,13 +2,19 @@ package com.sale.panda.manager.impl;
 
 import com.sale.panda.dao.SpuMapper;
 import com.sale.panda.dao.entity.Spu;
-import com.sale.panda.dao.entity.SpuPageQuery;
 import com.sale.panda.manager.SpuManager;
 import com.sale.panda.manager.constants.ObjectTypeContant;
 import com.sale.panda.manager.constants.ResponseStatus;
 import com.sale.panda.manager.entity.ExcelModel;
-import com.sale.panda.manager.entity.PageQueryResult;
+import com.sale.panda.manager.entity.ServiceException;
+import com.sale.panda.manager.utils.ExcelUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -17,16 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import com.sale.panda.manager.entity.ServiceException;
-import com.sale.panda.manager.utils.ExcelUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * TODO
@@ -112,12 +108,5 @@ public class SpuManagerImpl implements SpuManager {
     @Override
     public Integer update(Spu spu) {
         return spuMapper.update(spu);
-    }
-
-    @Override
-    public PageQueryResult<List<Spu>> pageQuery(SpuPageQuery pageQuery) {
-        List<Spu> result = spuMapper.pageQuery(pageQuery);
-        Integer total = spuMapper.count(pageQuery);
-        return new PageQueryResult<List<Spu>>(total, result);
     }
 }

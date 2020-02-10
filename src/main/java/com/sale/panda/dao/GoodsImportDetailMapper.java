@@ -7,11 +7,8 @@
  */
 package com.sale.panda.dao;
 
-import com.sale.panda.dao.entity.Goods;
-import com.sale.panda.dao.entity.Sku;
-import com.sale.panda.dao.entity.GoodsPageQuery;
+import com.sale.panda.dao.entity.*;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,17 +20,15 @@ import java.util.List;
  * @since 2019-12-28 10:00
  */
 @Mapper
-public interface SkuMapper {
+public interface GoodsImportDetailMapper {
 
-    Integer insert(Sku sku);
+    Integer insert(Goods good);
 
-    Integer batchInsert(List<Sku> goods);
+    Integer batchInsert(List<Goods> goods);
 
-    Integer update(Sku sku);
+    Integer update(Goods goods);
 
     List<Goods> pageQuery(GoodsPageQuery pageQuery);
-
-    List<Goods> listGoodsBySpuId(@Param("spuId") Integer spuId);
 
     Integer count(GoodsPageQuery pageQuery);
 

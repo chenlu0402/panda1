@@ -8,14 +8,15 @@
 package com.sale.panda.manager.impl;
 
 import com.sale.panda.dao.SkuMapper;
+import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.Sku;
+import com.sale.panda.dao.entity.GoodsPageQuery;
 import com.sale.panda.manager.SkuManager;
-
-import java.util.List;
+import com.sale.panda.manager.entity.PageQueryResult;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 /**
  * TODO
@@ -25,10 +26,11 @@ import org.springframework.stereotype.Component;
  * @since 2019-12-28 18:17
  */
 @Component
-public class SkuManagerImpl implements SkuManager{
+public class SkuManagerImpl implements SkuManager {
 
     @Resource
     private SkuMapper skuMapper;
+
     @Override
     public Integer insert(Sku sku) {
         return skuMapper.insert(sku);
@@ -45,7 +47,12 @@ public class SkuManagerImpl implements SkuManager{
     }
 
     @Override
-    public List<Sku> listSkuBySpuId(Integer spuId) {
-        return skuMapper.listSkuBySpuId(spuId);
+    public PageQueryResult<List<Goods>> pageQuery(GoodsPageQuery pageQuery) {
+        return new PageQueryResult<List<Goods>>(skuMapper.count(pageQuery), skuMapper.pageQuery(pageQuery));
+    }
+
+    @Override
+    public List<Goods> listGoodsBySpuId(Integer spuId) {
+        return skuMapper.listGoodsBySpuId(spuId);
     }
 }

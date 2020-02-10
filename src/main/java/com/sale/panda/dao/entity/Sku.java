@@ -22,7 +22,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Sku {
     Integer skuId;
-    String skuName;
     Integer spuId;
     String size;
     String color;
