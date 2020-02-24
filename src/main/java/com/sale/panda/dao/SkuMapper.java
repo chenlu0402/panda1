@@ -8,6 +8,7 @@
 package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.Goods;
+import com.sale.panda.dao.entity.OrderDetail;
 import com.sale.panda.dao.entity.Sku;
 import com.sale.panda.dao.entity.GoodsPageQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,10 +32,19 @@ public interface SkuMapper {
 
     Integer update(Sku sku);
 
+    Integer batchUpdate(List<Sku> skus);
+
     List<Goods> pageQuery(GoodsPageQuery pageQuery);
 
     List<Goods> listGoodsBySpuId(@Param("spuId") Integer spuId);
 
     Integer count(GoodsPageQuery pageQuery);
+
+    /**
+     * 跟据订单明细减去卖出的库存
+     * @param orderDetails
+     * @return
+     */
+    Integer subCount(List<OrderDetail> orderDetails);
 
 }

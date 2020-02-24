@@ -8,8 +8,10 @@
 package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.Order;
-
+import com.sale.panda.dao.entity.OrderPageQuery;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 销售
@@ -22,4 +24,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OrderMapper {
 
     Integer insert(Order order);
+
+    List<Order> listOrderByParam(OrderPageQuery query);
+
+    Integer count(OrderPageQuery query);
 }

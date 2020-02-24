@@ -47,4 +47,20 @@
         where spu_id = #{spuId};
     </update>
 
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+            update spu set updated_time = now()
+            <if test="item.spuName !=null and item.spuName != ''">
+                ,spu_name = #{item.spuName}
+            </if>
+            <if test="item.salePrice !=null">
+                ,sale_price = #{item.salePrice}
+            </if>
+            <if test="item.type !=null">
+                ,type = #{item.type}
+            </if>
+            where spu_id = #{item.spuId};
+        </foreach>
+    </update>
+
 </mapper>

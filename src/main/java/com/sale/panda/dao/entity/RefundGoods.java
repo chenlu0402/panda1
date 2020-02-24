@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-
 /**
  * @author: chenlu
  * @description:
@@ -13,22 +11,16 @@ import java.math.BigDecimal;
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Goods {
+public class RefundGoods {
+    String orderId;
     String spuId;
-    Integer skuId;
-    String skuName;
     String spuName;
-    BigDecimal inPrice;
-    BigDecimal salePrice;
-    Integer type;
-    String typeName;
     String size;
     String color;
-    Integer count;
     String feature1;
     String feature2;
     String feature3;
+    Integer count;
+    String remark;
     String createdTime;
-    String updatedTime;
-    Integer isDeleted;
 }

@@ -7,8 +7,11 @@
  */
 package com.sale.panda.manager;
 
+import com.sale.panda.controller.model.RefundModel;
 import com.sale.panda.dao.entity.Order;
 import com.sale.panda.dao.entity.OrderDetail;
+import com.sale.panda.dao.entity.OrderPageQuery;
+import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
 
@@ -22,5 +25,11 @@ public interface OrderManager {
 
     Integer insert(Order order);
 
-    Integer insert(List<OrderDetail> detail);
+    Integer insert(List<OrderDetail> details);
+
+    List<OrderDetail> listDetailByOrderId(String orderId);
+
+    PageQueryResult<List<Order>> pageQueryOrder(OrderPageQuery query);
+
+    void handleRefund(RefundModel refundModel);
 }

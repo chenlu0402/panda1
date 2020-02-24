@@ -23,22 +23,26 @@
 
     <insert id="batchInsert" parameterType="java.util.List">
         insert into sku
-        (spu_id,
-        size,
-        color,
-        feature1,
-        feature2,
-        feature3,
-        count)
-        VALUES
+        (
+            spu_id,
+            size,
+            color,
+            feature1,
+            feature2,
+            feature3,
+            count
+        )
+        values
         <foreach collection="list" item="good" separator=",">
-            (#{good.spuId},
-            #{good.size},
-            #{good.color},
-            #{good.feature1},
-            #{good.feature2},
-            #{good.feature3},
-            #{good.count})
+            (
+                #{good.spuId},
+                #{good.size},
+                #{good.color},
+                #{good.feature1},
+                #{good.feature2},
+                #{good.feature3},
+                #{good.count}
+            )
         </foreach>
     </insert>
     
@@ -69,6 +73,31 @@
             ,count = count + #{count}
         </if>
         where sku_id =#{skuId};
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="" close="" separator=";">
+            update sku set updated_time = NOW()
+            <if test=" item.size !=null and item.size !=''">
+                ,size = #{item.size}
+            </if>
+            <if test=" item.color !=null and item.color !=''">
+                ,color = #{item.color}
+            </if>
+            <if test=" item.feature1 !=null and item.feature1 !=''">
+                ,feature1 = #{item.feature1}
+            </if>
+            <if test=" item.feature2 !=null and item.feature2 !=''">
+                ,feature2 = #{item.feature2}
+            </if>
+            <if test=" item.feature3 !=null and item.feature3 !=''">
+                ,feature3 = #{item.feature3}
+            </if>
+            <if test=" item.count !=null">
+                ,count = count + #{item.count}
+            </if>
+            where sku_id =#{item.skuId}
+        </foreach>
     </update>
 
     <select id="pageQuery" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="com.sale.panda.dao.entity.Goods">
@@ -117,13 +146,21 @@
             p.spu_name,
             p.sale_price,
             p.type,
+            g.type_name,
             k.size,
             k.color,
             k.feature1,
             k.feature2,
             k.feature3
-        from spu p,sku k
+        from spu p,sku k,goods_type g
         where
-            p.spu_id = k.spu_id and p.is_deleted = 0 and k.is_deleted = 0 and p.spu_id = #{spuId}
+            p.spu_id = k.spu_id and p.type = g.id and p.is_deleted = 0 and k.is_deleted = 0 and p.spu_id = #{spuId}
     </select>
+
+    <update id="subCount" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            update sku set count = count - #{item.count}
+            where sku_id = #{item.skuId}
+        </foreach>
+    </update>
 </mapper>

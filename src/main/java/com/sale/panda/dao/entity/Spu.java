@@ -23,7 +23,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Spu {
-    Integer spuId;
+    String spuId;
     String spuName;
     BigDecimal salePrice;
     Integer type;

@@ -31,7 +31,7 @@
             <div class="layui-form-item">
                 <input type="hidden" id="hidden" value="">
                 <div class="layui-inline">
-                    <label class="layui-form-label" onclick="show()">商品编号</label>
+                    <label class="layui-form-label">商品编号</label>
                     <div class="layui-input-block">
                         <input type="text" name="spuId" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
@@ -89,7 +89,10 @@
         var $ = layui.$
                 , form = layui.form
                 , table = layui.table;
-
+        //正整数
+        var pIntReg = /^[1-9]\d*$/;
+        //大于0的整数加小数
+        var pIntPointReg = /^\d*\.?\d+$/;
         //表格里的下拉框值改变时更新表格缓存数据，这样保存或者复制时获取的数据才正确
         form.on('select(type)', function (data) {
             var selectElem = $(data.elem);    //获取下拉框
@@ -133,7 +136,7 @@
                 , {field: 'feature1', title: '特征一', width: 90, edit: 'text'}
                 , {field: 'feature2', title: '特征二', width: 90, edit: 'text'}
                 , {field: 'feature3', title: '特征三', width: 90, edit: 'text'}
-                , {field: 'count', title: '数量', width: 90, sort: true, edit: 'text'}
+                , {field: 'count', title: '数量', width: 90, edit: 'text'}
                 , {field: 'inPrice', title: '成本价', width: 90, edit: 'text'}
                 , {field: 'salePrice', title: '销售价', width: 90, edit: 'text'}
                 , {fixed: 'right', width: 120, align: 'center', toolbar: '#bar'}
@@ -202,6 +205,29 @@
 
             layer.confirm('将保存表格中的所有商品，确认无误了吗？', function (index) {
                 var allData = table.cache.goods_add;
+                //验证合法性再提交
+                for(var i = 0;i<allData.length;i++){
+                    //前端页面删除了行，获取的数据会存在空行
+                    if(allData[i].length == 0){
+                        continue;
+                    }
+                    var rowNum = Number(i)+1;
+                    var count = allData[i].count;
+                    var inPrice = allData[i].inPrice;
+                    var salePrice = allData[i].salePrice;
+                    if(!pIntReg.test(count)){
+                        layer.msg('第'+rowNum+'行的【数量】应填大于0的整数！请修改后重新提交');
+                        return;
+                    }
+                    if(!pIntPointReg.test(inPrice)){
+                        layer.msg('第'+rowNum+'行的【成本价】应填大于0的数字！请修改后重新提交');
+                        return;
+                    }
+                    if(!pIntPointReg.test(salePrice)){
+                        layer.msg('第'+rowNum+'行的【销售价】应填大于0的数字！请修改后重新提交');
+                        return;
+                    }
+                }
                 $.ajax({
                     url: "/goods/batchAddImportGoods",
                     type: 'post',
@@ -234,25 +260,33 @@
 
         //------------------------------------监听单元格编辑------------------------------------
         table.on('edit(goods_add)', function (obj) {
-            var skuId = obj.data.skuId;
-            var oldVal = $(obj.tr).find('td[data-field=size] div').text();
             var fieldName = obj.field;
+            var skuId = obj.data.skuId;
+            var oldVal = $(obj.tr).find('td[data-field='+fieldName+'] div').text();
             if (fieldName == 'count') {
-                var reg = /^[1-9]\d*$/;
-                alert(reg.test(obj.value));
+                if(!pIntReg.test(obj.value)){
+                    layer.msg('【数量】请输入大于0的整数！');
+                }
+            }
+            if (fieldName == 'inPrice') {
+                if(!pIntPointReg.test(obj.value)){
+                    layer.msg('【成本价】请输入大于0的数字！');
+                }
+            }
+            if (fieldName == 'salePrice') {
+                if(!pIntPointReg.test(obj.value)){
+                    layer.msg('【销售价】请输入大于0的数字！');
+                }
             }
             if (skuId != null && fieldName != 'count' && fieldName != 'inPrice') {
                 layer.confirm('确定将' + oldVal + '改成' + obj.value + '？历史库存将一同修改', function (index) {
                     layer.close(index);
                 }, function () {
-                    //obj.update({'\''+fieldName+'\'':oldVal});
+                    var fieldObj = {};
+                    fieldObj[fieldName] = oldVal;
+                    obj.update(fieldObj);
                 });
             }
-
-            obj.data.size = oldVal;
-            console.log(obj.value); //得到修改后的值
-            console.log(obj.field); //当前编辑的字段名
-            console.log(obj.data); //所在行的所有相关数据
         });
     });
 </script>

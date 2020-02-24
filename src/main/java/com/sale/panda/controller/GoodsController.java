@@ -47,17 +47,18 @@ public class GoodsController {
     private GoodsImportDetailManager detailManager;
 
     @GetMapping("/test")
-    public String test(){
+    public String test() {
         return "Hi!";
     }
+
     @PostMapping("/updateImportGoods")
-    public BaseResult updateGoods(@RequestBody GoodsModel goodsModel){
+    public BaseResult updateGoods(@RequestBody GoodsModel goodsModel) {
         Goods good = new Goods();
-        BeanUtils.copyProperties(goodsModel,good);
-        if(StringUtils.isNotBlank(goodsModel.getInPrice())){
+        BeanUtils.copyProperties(goodsModel, good);
+        if (StringUtils.isNotBlank(goodsModel.getInPrice())) {
             good.setInPrice(new BigDecimal(goodsModel.getInPrice()));
         }
-        if(StringUtils.isNoneBlank(goodsModel.getSalePrice())){
+        if (StringUtils.isNoneBlank(goodsModel.getSalePrice())) {
             good.setSalePrice(new BigDecimal(goodsModel.getSalePrice()));
         }
         detailManager.update(good);
@@ -65,48 +66,50 @@ public class GoodsController {
     }
 
     @PostMapping("/batchAddImportGoods")
-    public BaseResult batchAddGoods(@RequestBody List<Goods> allData){
+    public BaseResult batchAddGoods(@RequestBody List<Goods> allData) {
         detailManager.batchInsert(allData);
         return BaseResult.buildSuccess();
     }
 
     @PostMapping("/pageQueryGoods")
-    public BaseResult<List<Goods>> pageQueryGoods(@RequestBody GoodsPageQueryModel skuModel){
+    public BaseResult<List<Goods>> pageQueryGoods(@RequestBody GoodsPageQueryModel skuModel) {
         GoodsPageQuery pageQuery = new GoodsPageQuery();
-        BeanUtils.copyProperties(skuModel,pageQuery);
+        BeanUtils.copyProperties(skuModel, pageQuery);
         PageQueryResult<List<Goods>> result = skuManager.pageQuery(pageQuery);
-        return BaseResult.buildSuccess(result.getData(),result.getTotal());
+        return BaseResult.buildSuccess(result.getData(), result.getTotal());
     }
 
     @PostMapping("/pageQueryImportGoods")
-    public BaseResult<List<Goods>> pageQueryImportGoods(@RequestBody GoodsPageQueryModel goodsModel){
+    public BaseResult<List<Goods>> pageQueryImportGoods(@RequestBody GoodsPageQueryModel goodsModel) {
         GoodsPageQuery pageQuery = new GoodsPageQuery();
-        BeanUtils.copyProperties(goodsModel,pageQuery);
-        if(StringUtils.isNotBlank(goodsModel.getDatetimeRange())){
+        BeanUtils.copyProperties(goodsModel, pageQuery);
+        if (StringUtils.isNotBlank(goodsModel.getDatetimeRange())) {
             String[] datetimeRange = goodsModel.getDatetimeRange().split("~");
             pageQuery.setCreatedTimeStart(datetimeRange[0]);
             pageQuery.setCreatedTimeEnd(datetimeRange[1]);
         }
         PageQueryResult<List<Goods>> result = detailManager.pageQuery(pageQuery);
-        return BaseResult.buildSuccess(result.getData(),result.getTotal());
+        return BaseResult.buildSuccess(result.getData(), result.getTotal());
     }
 
     @GetMapping("/listGoodsBySpuId")
-    public BaseResult<List<Goods>> listGoodsBySpuId(Integer spuId){
-        if(spuId == null){
-            return BaseResult.buildSuccess();
-        }
+    public BaseResult<List<Goods>> listGoodsBySpuId(@RequestParam(required = true) Integer spuId) {
         return BaseResult.buildSuccess(skuManager.listGoodsBySpuId(spuId));
     }
 
+    @GetMapping("/listSkuForSale")
+    public BaseResult<List<Goods>> listSkuForSale(@RequestParam(required = true) Integer spuId) {
+        return BaseResult.buildSuccess(skuManager.listSkuForSale(spuId));
+    }
+
     @PostMapping("/upload")
-    public BaseResult upload(@RequestBody MultipartFile file){
+    public BaseResult upload(@RequestBody MultipartFile file) {
         String fileName = file.getOriginalFilename();
         if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
             BaseResult.buildFail(ResponseStatus.FILE_TYPE_NOT_SUPPORT);
         }
         spuManager.handleUpload(file);
-       return BaseResult.buildSuccess();
+        return BaseResult.buildSuccess();
     }
 
 }

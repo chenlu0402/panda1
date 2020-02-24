@@ -22,7 +22,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Sku {
     Integer skuId;
-    Integer spuId;
+    String spuId;
     String size;
     String color;
     String feature1;

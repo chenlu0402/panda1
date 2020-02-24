@@ -109,14 +109,14 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">进货价</label>
+        <label class="layui-form-label">成本价</label>
         <div class="layui-input-block">
             <input type="text" name="inPrice" lay-verify="number" placeholder="请输入进货价" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">售出价</label>
+        <label class="layui-form-label">销售价</label>
         <div class="layui-input-block">
             <input type="text" name="salePrice" lay-verify="number" placeholder="请输入售出价" autocomplete="off"
                    class="layui-input">
@@ -175,7 +175,7 @@
                 , {field: 'feature1', title: '特征一', width: 90}
                 , {field: 'feature2', title: '特征二', width: 90}
                 , {field: 'feature3', title: '特征三', width: 90}
-                , {field: 'count', title: '数量', width: 90, sort: true}
+                , {field: 'count', title: '数量', width: 90, sort: true }
                 , {field: 'inPrice', title: '成本价', width: 90}
                 , {field: 'salePrice', title: '销售价', width: 90}
                 , {field: 'createdTime', title: '插入时间', width: 170, sort: true}

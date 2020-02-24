@@ -32,4 +32,6 @@ public interface SkuManager {
     PageQueryResult<List<Goods>> pageQuery(GoodsPageQuery pageQuery);
 
     List<Goods> listGoodsBySpuId(Integer spuId);
+
+    List<Goods> listSkuForSale(Integer spuId);
 }

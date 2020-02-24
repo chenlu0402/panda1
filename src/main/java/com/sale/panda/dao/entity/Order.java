@@ -7,14 +7,15 @@
  */
 package com.sale.panda.dao.entity;
 
-import java.math.BigDecimal;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
- * 订单记录（支持单件折扣和总价折扣）
+ * 订单记录
  *
  * @author chenlu
  * @version V1.0
@@ -24,23 +25,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order {
     String orderId;
-    /**
-     * 会员编号  会员表里的主键id
-     */
-    Integer vipCode;
-    /**
-     *  0-会员折扣 1-立减折扣
-     */
-    Integer orderDiscountType;
-    /**
-     * 整个订单的折扣
-     */
-    BigDecimal orderDiscount;
-    /**
-     * 订单金额
-     */
-    BigDecimal amount;
+    Integer totalCount;
+    BigDecimal smallChanges;
+    BigDecimal totalAmount;
     String remark;
     String creator;
-
+    Date createdTime;
+    Date updated_time;
 }

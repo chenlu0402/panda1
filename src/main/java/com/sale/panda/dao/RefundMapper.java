@@ -7,26 +7,24 @@
  */
 package com.sale.panda.dao;
 
-import com.sale.panda.dao.entity.Spu;
+import com.sale.panda.dao.entity.RefundGoods;
+import com.sale.panda.dao.entity.RefundInfo;
+import com.sale.panda.dao.entity.RefundPageQuery;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
- * 商品spu
+ * 销售明细
  *
  * @author chenlu
  * @version V1.0
- * @since 2019-12-28 10:00
+ * @since 2019-12-28 10:33
  */
 @Mapper
-public interface SpuMapper {
+public interface RefundMapper {
 
-    Integer insert(Spu spu);
+    Integer insert(List<RefundInfo> list);
 
-    Integer batchInsert(List<Spu> goods);
-
-    Integer update(Spu spu);
-
-    Integer batchUpdate(List<Spu> spus);
+    List<RefundGoods> listRefundByParam(RefundPageQuery query);
 }

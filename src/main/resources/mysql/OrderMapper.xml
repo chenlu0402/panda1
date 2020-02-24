@@ -2,6 +2,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sale.panda.dao.OrderMapper">
 
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.Order">
+        insert into `order`
+        (
+        order_id,
+        total_count,
+        small_changes,
+        total_amount,
+        remark,
+        creator
+        )
+        values
+        (
+        #{orderId},
+        #{totalCount},
+        #{smallChanges},
+        #{totalAmount},
+        #{remark},
+        #{creator}
+        )
+    </insert>
 
+    <select id="listOrderByParam" parameterType="com.sale.panda.dao.entity.OrderPageQuery" resultType="com.sale.panda.dao.entity.Order">
+        select  order_id,
+                total_count,
+                small_changes,
+                total_amount,
+                remark,
+                creator,
+                created_time,
+                updated_time
+        from `order`
+        <where>
+            <if test="createdStartTime != null and createdStartTime != ''">
+                created_time &gt;= #{createdStartTime}
+            </if>
+            <if test="createdEndTime != null and createdEndTime != ''">
+                and created_time &lt;= #{createdStartTime}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark like "%"#{remark}"%"
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+        order by created_time desc limit #{offset},#{limit}
+    </select>
+
+    <select id="count" parameterType="com.sale.panda.dao.entity.OrderPageQuery" resultType="java.lang.Integer">
+        select count(1) from `order`
+        <where>
+            <if test="createdStartTime != null and createdStartTime != ''">
+                created_time &gt;= #{createdStartTime}
+            </if>
+            <if test="createdEndTime != null and createdEndTime != ''">
+                and created_time &lt;= #{createdStartTime}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark like "%"#{remark}"%"
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
 
 </mapper>

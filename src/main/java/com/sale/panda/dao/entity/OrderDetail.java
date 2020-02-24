@@ -7,11 +7,12 @@
  */
 package com.sale.panda.dao.entity;
 
-import java.math.BigDecimal;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 订单详细
@@ -23,17 +24,19 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetail {
-
     String orderId;
-    String skuId;
+    Integer skuId;
     Integer count;
-    BigDecimal amount;
     /**
-     * 0-会员折扣 1-立减折扣
+     * 0-无优惠 1-折扣 2-立减
      */
     Integer discountType;
+    BigDecimal originAmount;
+    BigDecimal amount;
     /**
-     * 折扣金额
+     * 折扣数值或者立减金额
      */
     BigDecimal discountAmount;
+    Date createdTime;
+    Date updated_time;
 }

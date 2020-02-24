@@ -2,6 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sale.panda.dao.OrderDetailMapper">
 
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into order_detail
+        (
+            order_id,
+            sku_id,
+            count,
+            discount_type,
+            origin_amount,
+            amount,
+            discount_amount
+        )
+        values
+        <foreach collection="list" item="detail" separator=",">
+            (
+            #{detail.orderId},
+            #{detail.skuId},
+            #{detail.count},
+            #{detail.discountType},
+            #{detail.originAmount},
+            #{detail.amount},
+            #{detail.discountAmount}
+            )
+        </foreach>
+    </insert>
 
-
+    <select id="listDetailByParam" parameterType="com.sale.panda.dao.entity.OrderDetailQuery" resultType="com.sale.panda.dao.entity.OrderDetail">
+        select  order_id,
+                sku_id,
+                count,
+                discount_type,
+                origin_amount,
+                amount,
+                discount_amount
+        from order_detail
+        where order_id = #{orderId}
+        <if test="skuId != null and skuId != ''">
+            and sku_id = #{skuId}
+        </if>
+    </select>
 </mapper>
