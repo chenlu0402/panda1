@@ -12,7 +12,9 @@ import com.sale.panda.controller.model.GoodsModel;
 import com.sale.panda.controller.model.GoodsPageQueryModel;
 import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.GoodsPageQuery;
+import com.sale.panda.dao.entity.GoodsType;
 import com.sale.panda.manager.GoodsImportDetailManager;
+import com.sale.panda.manager.GoodsTypeManager;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.SpuManager;
 import com.sale.panda.manager.constants.ResponseStatus;
@@ -46,9 +48,12 @@ public class GoodsController {
     @Resource
     private GoodsImportDetailManager detailManager;
 
-    @GetMapping("/test")
-    public String test() {
-        return "Hi!";
+    @Resource
+    private GoodsTypeManager goodsTypeManager;
+
+    @GetMapping("/listAllType")
+    public BaseResult<List<GoodsType>> listAllType(){
+        return BaseResult.buildSuccess(goodsTypeManager.listAllGoodsType());
     }
 
     @PostMapping("/updateImportGoods")

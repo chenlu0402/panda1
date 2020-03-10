@@ -23,47 +23,51 @@
         )
     </insert>
 
-    <select id="listOrderByParam" parameterType="com.sale.panda.dao.entity.OrderPageQuery" resultType="com.sale.panda.dao.entity.Order">
-        select  order_id,
-                total_count,
-                small_changes,
-                total_amount,
-                remark,
-                creator,
-                created_time,
-                updated_time
-        from `order`
+    <select id="listOrderByParam" parameterType="com.sale.panda.dao.entity.OrderPageQuery" resultType="com.sale.panda.dao.entity.OrderModel">
+        select  o.order_id,
+                o.total_count,
+                o.small_changes,
+                o.total_amount,
+                sum(d.count) as refundCount,
+                sum(d.amount) as refundAmount,
+                o.remark,
+                o.creator,
+                o.created_time,
+                o.updated_time
+        from `order` o left join refund d
+        on o.order_id = d.order_id
         <where>
             <if test="createdStartTime != null and createdStartTime != ''">
-                created_time &gt;= #{createdStartTime}
+                o.created_time &gt;= #{createdStartTime}
             </if>
             <if test="createdEndTime != null and createdEndTime != ''">
-                and created_time &lt;= #{createdStartTime}
+                and o.created_time &lt;= #{createdStartTime}
             </if>
             <if test="remark != null and remark != ''">
-                and remark like "%"#{remark}"%"
+                and o.remark like "%"#{remark}"%"
             </if>
             <if test="orderId != null and orderId != ''">
-                and order_id = #{orderId}
+                and o.order_id = #{orderId}
             </if>
         </where>
-        order by created_time desc limit #{offset},#{limit}
+        GROUP BY o.order_id order by o.created_time desc limit #{offset},#{limit}
     </select>
 
     <select id="count" parameterType="com.sale.panda.dao.entity.OrderPageQuery" resultType="java.lang.Integer">
-        select count(1) from `order`
+        select count(1) from `order` o left join refund d
+        on o.order_id = d.order_id
         <where>
             <if test="createdStartTime != null and createdStartTime != ''">
-                created_time &gt;= #{createdStartTime}
+                o.created_time &gt;= #{createdStartTime}
             </if>
             <if test="createdEndTime != null and createdEndTime != ''">
-                and created_time &lt;= #{createdStartTime}
+                and o.created_time &lt;= #{createdStartTime}
             </if>
             <if test="remark != null and remark != ''">
-                and remark like "%"#{remark}"%"
+                and o.remark like "%"#{remark}"%"
             </if>
             <if test="orderId != null and orderId != ''">
-                and order_id = #{orderId}
+                and o.order_id = #{orderId}
             </if>
         </where>
     </select>

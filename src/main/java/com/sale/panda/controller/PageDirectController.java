@@ -2,10 +2,10 @@ package com.sale.panda.controller;
 
 import com.sale.panda.dao.entity.GoodsType;
 import com.sale.panda.manager.GoodsTypeManager;
-import com.sale.panda.manager.SpuManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,28 +16,34 @@ import java.util.List;
  * @date:2019/10/15 19:02
  */
 @Controller
-public class PandaSaleController {
-
-    @Resource
-    private SpuManager spuManager;
+public class PageDirectController {
 
     @Resource
     private GoodsTypeManager goodsTypeManager;
 
-    @RequestMapping("/")
-    public String index(){
-        return "/test";
+    @RequestMapping("/loginPage")
+    public String tologin(){
+        return "/login";
     }
 
-    @RequestMapping("/index")
-    public String hello(){
-        return "/index";
+    @RequestMapping("/homePage")
+    public String home(){
+        return "/home";
     }
 
-    @RequestMapping("/remain")
-    public String remain(){
-        return "/remain";
+    @RequestMapping("/logout")
+    public String logout(){
+        //Subject subject = SecurityUtils.getSubject();
+        //subject.logout(); // shiro底层删除session的会话信息
+        return "/login";
     }
+
+    @RequestMapping("/user/login")
+    @ResponseBody
+    public String handleLogin(String username,String password){
+        return "/home";
+    }
+
 
     @RequestMapping("/goods_list_page")
     public String goods(ModelMap model){
@@ -46,11 +52,22 @@ public class PandaSaleController {
         return "/goods_list";
     }
 
-    @RequestMapping("/goods_import_detail_page")
+    @RequestMapping("/order_list_page")
+    public String order(){
+        return "/order_list";
+    }
+
+    @RequestMapping("/order_detail_page")
+    public String detail(String orderId,ModelMap modelMap){
+        modelMap.put("orderId",orderId);
+        return "/order_detail";
+    }
+
+    @RequestMapping("/goods_add_log_page")
     public String goodsDetail(ModelMap model){
         List<GoodsType> goodsTypeList = goodsTypeManager.listAllGoodsType();
         model.put("goodsTypeList",goodsTypeList);
-        return "/goods_import_detail";
+        return "goods_add_log";
     }
 
     @RequestMapping("/sale_page")
@@ -61,6 +78,11 @@ public class PandaSaleController {
     @RequestMapping("/goods_add_page")
     public String addGoods(){
         return "/goods_add";
+    }
+
+    @RequestMapping("/refund_list_page")
+    public String refundList(){
+        return "/refund_list";
     }
 
 }

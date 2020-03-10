@@ -5,18 +5,20 @@
     <insert id="batchInsert" parameterType="java.util.List">
         insert into order_detail
         (
-            order_id,
-            sku_id,
-            count,
-            discount_type,
-            origin_amount,
-            amount,
-            discount_amount
+        order_id,
+        spu_id,
+        sku_id,
+        count,
+        discount_type,
+        origin_amount,
+        amount,
+        discount_amount
         )
         values
         <foreach collection="list" item="detail" separator=",">
             (
             #{detail.orderId},
+            #{detail.spuId},
             #{detail.skuId},
             #{detail.count},
             #{detail.discountType},
@@ -27,18 +29,31 @@
         </foreach>
     </insert>
 
-    <select id="listDetailByParam" parameterType="com.sale.panda.dao.entity.OrderDetailQuery" resultType="com.sale.panda.dao.entity.OrderDetail">
-        select  order_id,
-                sku_id,
-                count,
-                discount_type,
-                origin_amount,
-                amount,
-                discount_amount
-        from order_detail
-        where order_id = #{orderId}
-        <if test="skuId != null and skuId != ''">
-            and sku_id = #{skuId}
-        </if>
+    <select id="listDetailByParam" parameterType="com.sale.panda.dao.entity.OrderDetailQuery"
+            resultType="com.sale.panda.dao.entity.OrderDetailModel">
+        SELECT
+            m.*,
+            d.count AS refundCount,
+            d.amount AS refundAmount
+        FROM
+            (
+            SELECT
+                a.order_id,
+                p.spu_name,
+                a.sku_id,
+                a.count,
+                a.discount_type,
+                a.origin_amount,
+                a.amount,
+                a.discount_amount
+            FROM
+                order_detail a,
+                spu p
+            WHERE
+                a.spu_id = p.spu_id
+                AND a.order_id = #{orderId}
+            ) m
+            LEFT JOIN ( SELECT sku_id,sum( count ) AS count, sum( amount ) AS amount FROM refund WHERE order_id = #{orderId} GROUP BY sku_id ) d
+            ON m.sku_id = d.sku_id
     </select>
 </mapper>

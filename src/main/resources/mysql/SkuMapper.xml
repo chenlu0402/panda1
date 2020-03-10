@@ -158,9 +158,8 @@
     </select>
 
     <update id="subCount" parameterType="java.util.List">
-        <foreach collection="list" separator=";" item="item">
-            update sku set count = count - #{item.count}
-            where sku_id = #{item.skuId}
+        <foreach collection="list" item="item" open="" close="" separator=";">
+            update sku set count = count - #{item.count} where sku_id = #{item.skuId}
         </foreach>
     </update>
 </mapper>

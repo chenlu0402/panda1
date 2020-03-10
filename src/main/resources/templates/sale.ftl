@@ -286,6 +286,7 @@
                 data: oldData
             });
         });
+
         var handleSettleIndex = 0;
         form.on('submit(handle_settle)', function (data) {
             var rowCount = $('.layui-table tbody').find('tr').length;
@@ -321,7 +322,7 @@
             var tableData = table.cache.sale;
             order.saleGoodsList = JSON.stringify(tableData);
             $.ajax({
-                url: "/goods/settleOrder",
+                url: "/order/settleOrder",
                 type: 'post',
                 data: JSON.stringify(order),
                 contentType: 'application/json',
@@ -365,6 +366,7 @@
             }else if (disCountType == 1) {
                 if (discountAmount > 10) {
                     layer.msg("折扣不能大于10，如：打8折则输入8");
+                    $('input[name=discountAmount]').val('');
                     return;
                 }
                 amount = (parseFloat(salePrice) * (parseFloat(discountAmount) / 10)) * parseInt(count);
@@ -372,6 +374,7 @@
                 amount = parseFloat(salePrice) * parseInt(count) - parseFloat(discountAmount);
                 if (amount < 0) {
                     layer.msg("折扣金额不能大于销售金额！");
+                    $('input[name=discountAmount]').val('');
                     return;
                 }
             }

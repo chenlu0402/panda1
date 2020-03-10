@@ -137,11 +137,7 @@
     <a class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger" lay-event="del">删除</a>
 </script>
 <script>
-    layui.config({
-        base: '/layui/' //静态资源所在路径
-    }).extend({
-        index: 'lib/index' //主入口模块
-    }).use(['index', 'table', 'upload', 'form', 'laydate'], function () {
+    layui.use(['table', 'form', 'laydate'], function () {
         var $ = layui.$
                 , form = layui.form
                 , table = layui.table

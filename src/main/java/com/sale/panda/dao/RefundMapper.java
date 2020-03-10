@@ -27,4 +27,6 @@ public interface RefundMapper {
     Integer insert(List<RefundInfo> list);
 
     List<RefundGoods> listRefundByParam(RefundPageQuery query);
+
+    Integer count(RefundPageQuery query);
 }

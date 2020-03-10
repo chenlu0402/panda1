@@ -12,32 +12,24 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * 订单详细
+ * 订单记录
  *
  * @author chenlu
  * @version V1.0
- * @since 2019-12-28 12:02
+ * @since 2019-12-28 09:53
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderDetail {
+public class OrderModel {
     String orderId;
-    String spuId;
-    Integer skuId;
-    Integer count;
-    /**
-     * 0-无优惠 1-折扣 2-立减
-     */
-    Integer discountType;
-    BigDecimal originAmount;
-    BigDecimal amount;
-    /**
-     * 折扣数值或者立减金额
-     */
-    BigDecimal discountAmount;
-    Date createdTime;
-    Date updated_time;
+    Integer totalCount;
+    BigDecimal smallChanges;
+    BigDecimal totalAmount;
+    Integer RefundCount;
+    BigDecimal refundAmount;
+    String remark;
+    String creator;
+    String createdTime;
 }

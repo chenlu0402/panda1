@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 /**
  * @author: chenlu
  * @description:
@@ -18,6 +20,8 @@ public class RefundInfo {
     Integer skuId;
 
     Integer count;
+
+    BigDecimal amount;
 
     String remark;
 }

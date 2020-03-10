@@ -1,16 +1,13 @@
 package com.sale.panda.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.sale.panda.controller.model.BaseResult;
-import com.sale.panda.controller.model.RefundModel;
-import com.sale.panda.controller.model.SaleGoodsModel;
-import com.sale.panda.controller.model.SaleOrderModel;
-import com.sale.panda.dao.entity.Order;
-import com.sale.panda.dao.entity.OrderDetail;
-import com.sale.panda.dao.entity.OrderPageQuery;
+import com.sale.panda.controller.model.*;
+import com.sale.panda.dao.entity.*;
 import com.sale.panda.manager.OrderManager;
 import com.sale.panda.manager.entity.PageQueryResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -38,6 +35,7 @@ public class OrderController {
      * @return
      */
     @PostMapping("/settleOrder")
+    @Transactional(rollbackFor = Exception.class)
     public BaseResult sale(@RequestBody SaleOrderModel order) {
         List<SaleGoodsModel> goodsDetails = JSON.parseArray(order.getSaleGoodsList(), SaleGoodsModel.class);
         String orderId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -60,18 +58,32 @@ public class OrderController {
     }
 
     @GetMapping("/listDetail")
-    BaseResult<List<OrderDetail>> listDetailByOrderId(@RequestParam(required = true) String orderId){
+    BaseResult<List<OrderDetailModel>> listDetailByOrderId(@RequestParam(required = true) String orderId){
         return BaseResult.buildSuccess(orderManager.listDetailByOrderId(orderId));
     }
 
     @PostMapping("/listOrder")
-    BaseResult<PageQueryResult<List<Order>>> listOrderByParam(@RequestBody OrderPageQuery query){
-        return BaseResult.buildSuccess(orderManager.pageQueryOrder(query));
+    BaseResult<PageQueryResult<List<OrderModel>>> listOrderByParam(@RequestBody OrderPageQuery query){
+        if(StringUtils.isNotBlank(query.getDatetimeRange())){
+            String[] datetimeRange = query.getDatetimeRange().split("~");
+            query.setCreatedStartTime(datetimeRange[0]);
+            query.setCreatedEndTime(datetimeRange[1]);
+        }
+        PageQueryResult<List<OrderModel>> queryResult = orderManager.pageQueryOrder(query);
+        return BaseResult.buildSuccess(queryResult.getData(),queryResult.getTotal());
     }
 
     @PostMapping("/refund")
     BaseResult refund(@RequestBody RefundModel refundModel){
-
+        orderManager.handleRefund(refundModel);
         return BaseResult.buildSuccess();
+    }
+
+    @PostMapping("listRefundInfo")
+    BaseResult<List<RefundGoods>> listRefundInfo(RefundPageQueryModel pageQueryModel){
+        RefundPageQuery query = new RefundPageQuery();
+        BeanUtils.copyProperties(pageQueryModel,query);
+        PageQueryResult<List<RefundGoods>> result = orderManager.pageQueryRefundInfo(query);
+        return BaseResult.buildSuccess(result.getData(),result.getTotal());
     }
 }

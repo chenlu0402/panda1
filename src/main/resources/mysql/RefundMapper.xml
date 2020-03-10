@@ -8,6 +8,7 @@
         order_id,
         sku_id,
         count,
+        amount,
         remark
         )
         values
@@ -16,42 +17,54 @@
             #{refund.orderId},
             #{refund.skuId},
             #{refund.count},
+            #{refund.amount},
             #{refund.remark}
             )
         </foreach>
     </insert>
 
-    <select id="listRefundByParam" parameterType="com.sale.panda.dao.entity.RefundPageQuery" resultType="com.sale.panda.dao.entity.RefundGoods">
-        select  order_id,
-                p.spu_id,
-                p.spu_name,
-                k.size,
-                k.color,
-                k.feature1,
-                k.feature2,
-                k.feature3,
-                d.count,
-                d.remak,
-                d.created_time
-        from order_detail d,sku k,spu p
-        where d.is_refund = 1 and d.sku_id = k.sku_id and k.spu_id = p.spu_id
-        <if test="createdStartTime != null and createdStartTime != ''">
-            and created_time &gt;= #{createdStartTime}
-        </if>
-        <if test="createdEndTime != null and createdEndTime != ''">
-            and created_time &lt;= #{createdStartTime}
-        </if>
-        order by created_time desc limit #{offset},#{limit}
-    </select>
-
-    <select id="count" parameterType="com.sale.panda.dao.entity.RefundPageQuery" resultType="java.lang.Integer">
-        select count(1) from order_detail d,sku k,spu p
-        where d.is_refund = 1 and d.sku_id = k.sku_id and k.spu_id = p.spu_id
+    <select id="listRefundByParam" parameterType="com.sale.panda.dao.entity.RefundPageQuery"
+            resultType="com.sale.panda.dao.entity.RefundGoods">
+        select d.order_id,
+        p.spu_id,
+        p.spu_name,
+        k.size,
+        k.color,
+        d.count,
+        d.amount,
+        d.remark,
+        d.created_time
+        from refund d,sku k,spu p
+        where d.sku_id = k.sku_id and k.spu_id = p.spu_id
         <if test="createdStartTime != null and createdStartTime != ''">
             and d.created_time &gt;= #{createdStartTime}
         </if>
         <if test="createdEndTime != null and createdEndTime != ''">
             and d.created_time &lt;= #{createdStartTime}
+        </if>
+        <if test="orderId !=null and orderId !=''">
+            and d.order_id = #{orderId}
+        </if>
+        <if test="remark !=null and remark !=''">
+            and d.remark like "%"#{remark}"%"
+        </if>
+        order by d.created_time desc limit #{offset},#{limit}
+    </select>
+
+    <select id="count" parameterType="com.sale.panda.dao.entity.RefundPageQuery" resultType="java.lang.Integer">
+        select count(1) from refund d,sku k,spu p
+        where d.sku_id = k.sku_id and k.spu_id = p.spu_id
+        <if test="createdStartTime != null and createdStartTime != ''">
+            and d.created_time &gt;= #{createdStartTime}
+        </if>
+        <if test="createdEndTime != null and createdEndTime != ''">
+            and d.created_time &lt;= #{createdStartTime}
+        </if>
+        <if test="orderId !=null and orderId !=''">
+            and d.order_id = #{orderId}
+        </if>
+        <if test="remark !=null and remark !=''">
+            and d.remark like "%"#{remark}"%"
         </if>
     </select>
 

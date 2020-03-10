@@ -42,9 +42,9 @@ public interface SkuMapper {
 
     /**
      * 跟据订单明细减去卖出的库存
-     * @param orderDetails
+     * @param list
      * @return
      */
-    Integer subCount(List<OrderDetail> orderDetails);
+    Integer subCount(List<OrderDetail> list);
 
 }

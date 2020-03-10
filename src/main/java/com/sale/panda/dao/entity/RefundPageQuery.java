@@ -18,4 +18,6 @@ public class RefundPageQuery extends PageQuery{
     String createdEndTime;
 
     String remark;
+
+    String orderId;
 }

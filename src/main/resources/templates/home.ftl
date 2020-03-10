@@ -20,20 +20,30 @@
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
                 <div class="layui-logo" lay-href="home/console.html">
-                    <span>layuiAdmin</span>
+                    <span>季青职业服</span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="库存列表" lay-direction="2">
-                            <i class="layui-icon layui-icon-home"></i>
+                        <a href="javascript:;" lay-tips="库存列表" id="sku" lay-direction="4">
+                            <i class="layui-icon layui-icon-tabs"></i>
                             <cite>库存列表</cite>
                         </a>
                         <a href="javascript:;" lay-tips="库存录入" id="goods_import" lay-direction="3">
+                            <i class="layui-icon layui-icon-survey"></i>
                             <cite>库存录入</cite>
                         </a>
-                        <a href="javascript:;" lay-tips="销售" id="sale" lay-direction="3">
-                            <cite>销售</cite>
+                        <a href="javascript:;" lay-tips="商品销售" id="sale" lay-direction="1">
+                            <i class="layui-icon layui-icon-rmb"></i>
+                            <cite>商品销售</cite>
+                        </a>
+                        <a href="javascript:;" lay-tips="订单列表" id="order" lay-direction="2">
+                            <i class="layui-icon layui-icon-template-1"></i>
+                            <cite>订单列表</cite>
+                        </a>
+                        <a href="javascript:;" lay-tips="退货明细" id="refund" lay-direction="2">
+                            <i class="layui-icon layui-icon-unlink"></i>
+                            <cite>退货明细</cite>
                         </a>
                     </li>
                 </ul>
@@ -73,8 +83,20 @@
             layui.index.openTabsPage("/sale_page", "商品销售");
         });
 
+        $('#order').click(function () {
+            layui.index.openTabsPage("/order_list_page", "订单列表");
+        });
+
         $('#goods_import').click(function () {
-            layui.index.openTabsPage("/goods_import_detail_page", "库存录入");
+            layui.index.openTabsPage("/goods_add_log_page", "库存录入");
+        });
+
+        $('#sku').click(function () {
+            layui.index.openTabsPage("/goods_list_page", "库存列表");
+        });
+
+        $('#refund').click(function () {
+            layui.index.openTabsPage("/refund_list_page", "退货明细");
         });
     });
 </script>

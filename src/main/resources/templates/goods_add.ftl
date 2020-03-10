@@ -109,7 +109,7 @@
 
         //------------------------------------品类下拉框数据初始化------------------------------------
         $.ajax({
-            url: "/listAllType",
+            url: "/goods/listAllType",
             type: 'Get',
             contentType: 'application/json',
             dataType: 'json',

@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 /**
  * @author: chenlu
  * @description:
@@ -17,10 +19,14 @@ public class RefundGoods {
     String spuName;
     String size;
     String color;
-    String feature1;
-    String feature2;
-    String feature3;
+    /**
+     * 退货数量
+     */
     Integer count;
+    /**
+     * 退款金额
+     */
+    BigDecimal amount;
     String remark;
     String createdTime;
 }

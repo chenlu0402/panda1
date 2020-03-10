@@ -17,6 +17,8 @@ public class OrderPageQuery extends PageQuery{
 
     String createdEndTime;
 
+    String datetimeRange;
+
     String remark;
 
     String orderId;

@@ -4,24 +4,24 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-
 /**
  * @author: chenlu
  * @description:
- * @date:2020/2/23 12:00
+ * @date:2020/2/23 10:43
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RefundModel {
+public class RefundPageQueryModel{
+
+    String createdStartTime;
+
+    String createdEndTime;
+
+    String remark;
 
     String orderId;
 
-    Integer skuId;
+    Integer limit = 10;
+    Integer page = 1;
 
-    Integer count;
-
-    BigDecimal amount;
-
-    String remark;
 }

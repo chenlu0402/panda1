@@ -8,6 +8,7 @@
 package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.OrderDetail;
+import com.sale.panda.dao.entity.OrderDetailModel;
 import com.sale.panda.dao.entity.OrderDetailQuery;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,5 +26,5 @@ public interface OrderDetailMapper {
 
     Integer batchInsert(List<OrderDetail> list);
 
-    List<OrderDetail> listDetailByParam(OrderDetailQuery query);
+    List<OrderDetailModel> listDetailByParam(OrderDetailQuery query);
 }
