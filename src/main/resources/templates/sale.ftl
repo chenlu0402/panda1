@@ -116,6 +116,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="maxCount" value="">
 <div class="layui-form" lay-filter="settle_form" id="settle_form" style="padding: 20px 30px 0 0;display: none">
     <div class="layui-form-item">
         <label class="layui-form-label">应收</label>
@@ -357,6 +358,28 @@
                 layer.msg("请输入数量！");
                 return;
             }
+
+            var skuId = $('select[option:selected]').val();
+
+            //判断库存
+            $.ajax({
+                url: "/goods/getSkuById",
+                type: 'get',
+                data: JSON.stringify({"skuId":skuId}),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (result) {
+                    if(result.code == 0 && result.data != null){
+                        $('#maxCount').val(result.data.count);
+                    }
+                }
+            });
+            var maxCount = $('#maxCount').val();
+            if(parseInt(count) > maxCount){
+                layer.msg("库存只剩"+maxCount+"件！");
+                $('input[name=count]').val(maxCount);
+            }
+
             var disCountType = $('select[name=discountType]').val();
             var discountAmount = $('input[name=discountAmount]').val();
             var amount = $('input[name=amount]').val();

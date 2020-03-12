@@ -9,15 +9,18 @@ package com.sale.panda.manager.impl;
 
 import com.sale.panda.dao.SkuMapper;
 import com.sale.panda.dao.entity.Goods;
-import com.sale.panda.dao.entity.Sku;
 import com.sale.panda.dao.entity.GoodsPageQuery;
+import com.sale.panda.dao.entity.Sku;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.entity.PageQueryResult;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
-import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * TODO
@@ -48,6 +51,11 @@ public class SkuManagerImpl implements SkuManager {
     }
 
     @Override
+    public Sku getSku(Integer skuId) {
+        return skuMapper.getSku(skuId);
+    }
+
+    @Override
     public PageQueryResult<List<Goods>> pageQuery(GoodsPageQuery pageQuery) {
         return new PageQueryResult<List<Goods>>(skuMapper.count(pageQuery), skuMapper.pageQuery(pageQuery));
     }
@@ -59,14 +67,19 @@ public class SkuManagerImpl implements SkuManager {
 
     @Override
     public List<Goods> listSkuForSale(Integer spuId) {
+        List<Goods> result = new ArrayList<>();
         List<Goods> goodsList = skuMapper.listGoodsBySpuId(spuId);
         goodsList.stream().forEach(good -> {
+            if(good.getCount() == 0){
+                return;
+            }
             String color = StringUtils.isBlank(good.getColor()) ? "" : good.getColor();
             String feature1 = StringUtils.isBlank(good.getFeature1()) ? "" : good.getFeature1();
             String feature2 = StringUtils.isBlank(good.getFeature2()) ? "" : good.getFeature2();
             String feature3 = StringUtils.isBlank(good.getFeature3()) ? "" : good.getFeature3();
             good.setSkuName(good.getTypeName() + good.getSize() + color + feature1 + feature2 + feature3);
+            result.add(good);
         });
-        return goodsList;
+        return result;
     }
 }

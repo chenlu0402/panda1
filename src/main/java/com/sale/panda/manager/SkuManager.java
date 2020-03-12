@@ -29,6 +29,8 @@ public interface SkuManager {
 
     Integer update(Sku sku);
 
+    Sku getSku(Integer skuId);
+
     PageQueryResult<List<Goods>> pageQuery(GoodsPageQuery pageQuery);
 
     List<Goods> listGoodsBySpuId(Integer spuId);

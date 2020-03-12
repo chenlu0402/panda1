@@ -8,13 +8,14 @@
 package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.Goods;
+import com.sale.panda.dao.entity.GoodsPageQuery;
 import com.sale.panda.dao.entity.OrderDetail;
 import com.sale.panda.dao.entity.Sku;
-import com.sale.panda.dao.entity.GoodsPageQuery;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 商品sku
@@ -33,6 +34,8 @@ public interface SkuMapper {
     Integer update(Sku sku);
 
     Integer batchUpdate(List<Sku> skus);
+
+    Sku getSku(@Param("skuId") Integer skuId);
 
     List<Goods> pageQuery(GoodsPageQuery pageQuery);
 

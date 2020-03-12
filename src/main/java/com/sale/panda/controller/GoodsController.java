@@ -13,20 +13,28 @@ import com.sale.panda.controller.model.GoodsPageQueryModel;
 import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.GoodsPageQuery;
 import com.sale.panda.dao.entity.GoodsType;
+import com.sale.panda.dao.entity.Sku;
 import com.sale.panda.manager.GoodsImportDetailManager;
 import com.sale.panda.manager.GoodsTypeManager;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.SpuManager;
 import com.sale.panda.manager.constants.ResponseStatus;
 import com.sale.panda.manager.entity.PageQueryResult;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 商品相关
@@ -115,6 +123,12 @@ public class GoodsController {
         }
         spuManager.handleUpload(file);
         return BaseResult.buildSuccess();
+    }
+
+    @GetMapping("/getSkuById")
+    public BaseResult<Sku> getSkuById(@RequestParam Integer skuId){
+        Sku sku = skuManager.getSku(skuId);
+        return BaseResult.buildSuccess(sku);
     }
 
 }

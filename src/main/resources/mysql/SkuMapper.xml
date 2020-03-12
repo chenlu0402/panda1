@@ -162,4 +162,15 @@
             update sku set count = count - #{item.count} where sku_id = #{item.skuId}
         </foreach>
     </update>
+    
+    <select id="getSku" parameterType="java.lang.Integer" resultType="com.sale.panda.dao.entity.Sku">
+        select spu_id,
+                size,
+                color,
+                feature1,
+                feature2,
+                feature3,
+                count
+        from sku where sku_id = #{skuId}
+    </select>
 </mapper>
