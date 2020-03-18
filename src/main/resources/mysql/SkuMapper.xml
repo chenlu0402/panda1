@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sale.panda.dao.SkuMapper">
 
-    <insert id="insert" parameterType="com.sale.panda.dao.entity.Sku">
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.Sku" useGeneratedKeys="true" keyProperty="skuId">
        insert into sku
        (spu_id,
         size,
@@ -151,7 +151,8 @@
             k.color,
             k.feature1,
             k.feature2,
-            k.feature3
+            k.feature3,
+            k.count
         from spu p,sku k,goods_type g
         where
             p.spu_id = k.spu_id and p.type = g.id and p.is_deleted = 0 and k.is_deleted = 0 and p.spu_id = #{spuId}

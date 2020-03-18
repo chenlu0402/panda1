@@ -212,6 +212,8 @@
             caculateAmount();
         });
 
+        var selectSkuIndex;
+
         form.on('submit(goods-search)', function (data) {
             var field = data.field;
             if (field.spuId == '') {
@@ -242,6 +244,7 @@
                         , "skuName": data.skuName
                         , "salePrice": data.salePrice
                         , "count": 1
+                        , "discountType":0
                         , "discountAmount": 0
                         , "amount": data.salePrice
                     });
@@ -255,9 +258,9 @@
                         option = option + '<option value="' + result[i].skuId + '"' + selected + '>' + result[i].skuName + '</option>';
                     }
                     $('select[name=skuName]').empty().append(option);
-                    form.render('select','skuName');
+                    form.render();
 
-                    layer.open({
+                    selectSkuIndex = layer.open({
                         type: 1,
                         title: '商品销售',
                         content: $('#select_goods') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
@@ -267,7 +270,7 @@
         });
 
         form.on('submit(cancel)', function () {
-            layer.close(layer.index);
+            layer.close(selectSkuIndex);
         });
 
         form.on('submit(addSkuToTable)', function (data) {
@@ -281,7 +284,7 @@
             } else {
                 oldData = formVal;
             }
-            layer.close(layer.index);
+            layer.close(selectSkuIndex);
             //执行重载
             table.reload('sale', {
                 data: oldData
@@ -329,8 +332,11 @@
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function (data) {
-                    layer.msg('结算完成！');
                     layer.close(handleSettleIndex);
+                    layer.msg('结算完成！');
+                    setTimeout(function(){
+                        window.location.reload();//刷新当前页面.
+                    },1000);
                 }
             });
         });
@@ -359,14 +365,13 @@
                 return;
             }
 
-            var skuId = $('select[option:selected]').val();
+            var skuId = $('select[name=skuName] option:selected').val();
 
             //判断库存
             $.ajax({
-                url: "/goods/getSkuById",
+                url: "/goods/getSkuById?skuId="+skuId,
                 type: 'get',
-                data: JSON.stringify({"skuId":skuId}),
-                contentType: 'application/json',
+                async: false,
                 dataType: 'json',
                 success: function (result) {
                     if(result.code == 0 && result.data != null){
@@ -377,6 +382,7 @@
             var maxCount = $('#maxCount').val();
             if(parseInt(count) > maxCount){
                 layer.msg("库存只剩"+maxCount+"件！");
+                count = maxCount;
                 $('input[name=count]').val(maxCount);
             }
 

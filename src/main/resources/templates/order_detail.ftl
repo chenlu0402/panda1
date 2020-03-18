@@ -163,12 +163,13 @@
                 success: function (dt) {
                     layer.msg("操作成功！");
                     layer.close(layerIndex);
+                    table.reload('order-detail');
                 }
             });
         });
 
         form.on('submit(cancel)', function (data) {
-            layer.close(layer.index);
+            layer.close(layerIndex);
         });
 
         //---------------------------表格工具栏-----------------------------

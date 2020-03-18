@@ -124,6 +124,7 @@
                     success: function (dt) {
                         layer.msg("操作成功！");
                         layer.close(layerIndex);
+                        table.reload('order-list');
                     }
                 });
             });

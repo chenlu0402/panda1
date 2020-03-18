@@ -47,7 +47,7 @@
         count)
         VALUES
         <foreach collection="list" item="good" separator=",">
-            (#{good.skuId}
+            (#{good.skuId},
             #{good.spuId},
             #{good.spuName},
             #{good.size},

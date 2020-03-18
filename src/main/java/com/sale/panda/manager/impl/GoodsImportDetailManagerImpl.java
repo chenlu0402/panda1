@@ -55,7 +55,8 @@ public class GoodsImportDetailManagerImpl implements GoodsImportDetailManager {
             BeanUtils.copyProperties(good,spu);
             if(good.getSkuId() == null){
                 insertFlag = true;
-                skusForInsert.add(sku);
+                skuMapper.insert(sku);
+                good.setSkuId(sku.getSkuId());
                 spusForInsert.add(spu);
             }else{
                 updateFlag = true;
@@ -65,7 +66,6 @@ public class GoodsImportDetailManagerImpl implements GoodsImportDetailManager {
         }
 
         if(insertFlag){
-            skuMapper.batchInsert(skusForInsert);
             spuMapper.batchInsert(spusForInsert);
         }
 

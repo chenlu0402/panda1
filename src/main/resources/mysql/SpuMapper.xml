@@ -3,7 +3,7 @@
 <mapper namespace="com.sale.panda.dao.SpuMapper">
 
     <insert id="insert" parameterType="com.sale.panda.dao.entity.Spu">
-        insert into spu
+        insert ignore into spu
         (spu_id,
         spu_name,
         sale_price,
@@ -16,7 +16,7 @@
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into spu
+        insert ignore into spu
         (spu_id,
         spu_name,
         sale_price,

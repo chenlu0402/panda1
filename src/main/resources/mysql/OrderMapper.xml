@@ -41,7 +41,7 @@
                 o.created_time &gt;= #{createdStartTime}
             </if>
             <if test="createdEndTime != null and createdEndTime != ''">
-                and o.created_time &lt;= #{createdStartTime}
+                and o.created_time &lt;= #{createdEndTime}
             </if>
             <if test="remark != null and remark != ''">
                 and o.remark like "%"#{remark}"%"

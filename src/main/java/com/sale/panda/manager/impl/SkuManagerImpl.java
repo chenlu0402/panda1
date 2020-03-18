@@ -13,14 +13,13 @@ import com.sale.panda.dao.entity.GoodsPageQuery;
 import com.sale.panda.dao.entity.Sku;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.entity.PageQueryResult;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO
@@ -62,24 +61,32 @@ public class SkuManagerImpl implements SkuManager {
 
     @Override
     public List<Goods> listGoodsBySpuId(Integer spuId) {
-        return skuMapper.listGoodsBySpuId(spuId);
+        List<Goods> result = skuMapper.listGoodsBySpuId(spuId);
+        if(!CollectionUtils.isEmpty(result)){
+            result.stream().forEach(good->{
+                good.setCount(1);
+            });
+        }
+        return result;
     }
 
     @Override
     public List<Goods> listSkuForSale(Integer spuId) {
         List<Goods> result = new ArrayList<>();
         List<Goods> goodsList = skuMapper.listGoodsBySpuId(spuId);
-        goodsList.stream().forEach(good -> {
-            if(good.getCount() == 0){
-                return;
-            }
-            String color = StringUtils.isBlank(good.getColor()) ? "" : good.getColor();
-            String feature1 = StringUtils.isBlank(good.getFeature1()) ? "" : good.getFeature1();
-            String feature2 = StringUtils.isBlank(good.getFeature2()) ? "" : good.getFeature2();
-            String feature3 = StringUtils.isBlank(good.getFeature3()) ? "" : good.getFeature3();
-            good.setSkuName(good.getTypeName() + good.getSize() + color + feature1 + feature2 + feature3);
-            result.add(good);
-        });
+        if(!CollectionUtils.isEmpty(goodsList)){
+            goodsList.stream().forEach(good -> {
+                if(good.getCount() == 0){
+                    return;
+                }
+                String color = StringUtils.isBlank(good.getColor()) ? "" : good.getColor();
+                String feature1 = StringUtils.isBlank(good.getFeature1()) ? "" : good.getFeature1();
+                String feature2 = StringUtils.isBlank(good.getFeature2()) ? "" : good.getFeature2();
+                String feature3 = StringUtils.isBlank(good.getFeature3()) ? "" : good.getFeature3();
+                good.setSkuName(good.getTypeName() + good.getSize() + color + feature1 + feature2 + feature3);
+                result.add(good);
+            });
+        }
         return result;
     }
 }

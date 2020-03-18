@@ -55,6 +55,7 @@ layui.extend({
     } else {
       var iframe = admin.tabsBody(admin.tabsPage.index).find('.layadmin-iframe');
       iframe[0].contentWindow.location.href = url;
+      iframe[0].contentWindow.location.reload(true);
     }
 
     //定位当前tabs

@@ -144,10 +144,16 @@
         });
 
         //------------------------------------按钮事件------------------------------------
+        var addFlag = true;
         form.on('submit(add)', function (data) {
+            if(!addFlag){
+                return;
+            }
+            addFlag = false;
             var field = data.field;
             if (field.spuId == '') {
                 layer.msg('请输入需要录入库存的商品编号！');
+                addFlag = true;
                 return;
             }
 
@@ -192,6 +198,7 @@
                     table.reload('goods_add', {
                         data: oldData
                     });
+                    addFlag = true;
                 }
             });
         });
@@ -237,6 +244,9 @@
                     async: false,
                     success: function (data) {
                         layer.msg('保存成功！');
+                        setTimeout(function(){
+                            window.location.reload();//刷新当前页面.
+                        },1000);
                     }
                 });
             });
@@ -250,7 +260,7 @@
 
             if (layEvent === 'copy') { //复制
                 var oldData = table.cache.goods_add;
-                oldData.skuId = null;
+                data.skuId = null;
                 oldData.push(data);
                 table.reload('goods_add', {data: oldData});
             } else if (layEvent === 'del') {
