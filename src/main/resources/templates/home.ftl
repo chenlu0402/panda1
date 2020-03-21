@@ -79,6 +79,7 @@
         index: 'lib/index' //主入口模块
     }).use('index',function () {
 
+
         $('#sale').click(function () {
             layui.index.openTabsPage("/sale_page", "商品销售");
         });
