@@ -156,9 +156,6 @@
                 addFlag = true;
                 return;
             }
-
-            var field = data.field;
-
             $.ajax({
                 url: "/goods/listGoodsBySpuId",
                 type: 'Get',
@@ -175,7 +172,7 @@
                                     'spuName': null,
                                     'inPrice': null,
                                     'salePrice': null,
-                                    'type': null,
+                                    'type': 1,
                                     'typeName': null,
                                     'size': null,
                                     'color': null,
@@ -199,6 +196,7 @@
                         data: oldData
                     });
                     addFlag = true;
+                    $('input[name=spuId]').val('');
                 }
             });
         });
@@ -212,12 +210,16 @@
 
             layer.confirm('将保存表格中的所有商品，确认无误了吗？', function (index) {
                 var allData = table.cache.goods_add;
+                var result = [];
                 //验证合法性再提交
                 for(var i = 0;i<allData.length;i++){
                     //前端页面删除了行，获取的数据会存在空行
                     if(allData[i].length == 0){
+                        allData.splice(i,1);
                         continue;
                     }
+                    //把不是空行的存起来提交
+                    result.push(allData[i]);
                     var rowNum = Number(i)+1;
                     var count = allData[i].count;
                     var inPrice = allData[i].inPrice;
@@ -238,7 +240,7 @@
                 $.ajax({
                     url: "/goods/batchAddImportGoods",
                     type: 'post',
-                    data: JSON.stringify(allData),
+                    data: JSON.stringify(result),
                     contentType: 'application/json',
                     dataType: 'json',
                     async: false,

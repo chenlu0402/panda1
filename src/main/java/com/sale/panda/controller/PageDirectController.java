@@ -75,6 +75,11 @@ public class PageDirectController {
         return "/sale";
     }
 
+    @RequestMapping("/desc")
+    public String desc(){
+        return "/desc";
+    }
+
     @RequestMapping("/goods_add_page")
     public String addGoods(){
         return "/goods_add";
@@ -83,6 +88,11 @@ public class PageDirectController {
     @RequestMapping("/refund_list_page")
     public String refundList(){
         return "/refund_list";
+    }
+
+    @RequestMapping("/sku_change_page")
+    public String changeList(){
+        return "/sku_change_list";
     }
 
 }

@@ -62,42 +62,9 @@
         </foreach>
     </insert>
     
-    <update id="update" parameterType="com.sale.panda.dao.entity.Goods">
-        update goods_import_detail set updated_time = now()
-        <if test=" spuName !=null and spuName !=''">
-            ,spu_name = #{spuName}
-        </if>
-        <if test=" size !=null and size !=''">
-            ,size = #{size}
-        </if>
-        <if test=" color !=null and color !=''">
-            ,color = #{color}
-        </if>
-        <if test=" type !=null">
-            ,type = #{type}
-        </if>
-        <if test=" feature1 !=null and feature1 !=''">
-            ,feature1 = #{feature1}
-        </if>
-        <if test=" feature2 !=null and feature2 !=''">
-            ,feature2 = #{feature2}
-        </if>
-        <if test=" feature3 !=null and feature3 !=''">
-            ,feature3 = #{feature3}
-        </if>
-        <if test="count !=null">
-            ,count = #{count}
-        </if>
-        <if test=" inPrice !=null ">
-            ,in_price = #{inPrice}
-        </if>
-        <if test=" salePrice !=null ">
-            ,sale_price = #{salePrice}
-        </if>
-        <if test=" isDeleted !=null">
-            ,is_deleted = #{isDeleted}
-        </if>
-        where sku_id =#{skuId};
+    <update id="delete" parameterType="com.sale.panda.dao.entity.Goods">
+        update goods_import_detail set is_deleted = 1
+        where sku_id = #{skuId} and created_time = #{createdTime};
     </update>
 
     <select id="pageQuery" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="com.sale.panda.dao.entity.Goods">

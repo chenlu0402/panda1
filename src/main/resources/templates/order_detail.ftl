@@ -111,15 +111,17 @@
             , method: 'Get'
             , cols: [[ //表头
                 {field: 'skuId',hide:true, title: 'skuId'}
-                , {field: 'spuName', title: '商品名称',width: 250, fixed: 'left'}
-                , {field: 'count', title: '售出数量'}
-                , {field: 'discountTypeDesc', title: '折扣类型'}
-                , {field: 'originAmount', title: '售价'}
+                , {field: 'spuName', title: '商品名称',width: 220, fixed: 'left'}
+                , {field: 'size', title: '尺寸',width: 70}
+                , {field: 'color', title: '颜色',width: 70}
+                , {field: 'count', title: '售出数量',width: 90}
+                , {field: 'discountTypeDesc', title: '折扣类型',width: 90}
+                , {field: 'originAmount', title: '售价',width: 70}
                 , {field: 'discountAmount',width: 120, title: '折扣/立减金额'}
-                , {field: 'amount', title: '实收金额'}
-                , {field: 'refundCount', title: '退货数量'}
-                , {field: 'refundAmount', title: '退款金额'}
-                , {width: 120,align: 'center', templet: '#barTpl'}
+                , {field: 'amount', title: '实收金额',width: 90}
+                , {field: 'refundCount', title: '退货数量',width: 90}
+                , {field: 'refundAmount', title: '退款金额',width: 90}
+                , {width: 70,align: 'center', templet: '#barTpl'}
             ]]
         });
 
@@ -132,7 +134,7 @@
                 layer.msg("退货数量不能为空！");
                 return;
             }
-            if(count > saleCount){
+            if(parseInt(count) > parseInt(saleCount)){
                 layer.msg("退货数量不能大于实际销售数量！");
                 $(this).val('');
                 return;
@@ -144,7 +146,7 @@
         $('input[name=amount]').bind('change', function () {
             var realityAmount = $('#realityAmount').val();
             var amount = $(this).val();
-            if(amount > realityAmount){
+            if(parseFloat(amount) > parseFloat(realityAmount)){
                 layer.msg("退款金额不能大于实际销售金额！");
                 $(this).val('');
                 return;

@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 public class OrderDetailModel {
     String orderId;
     String spuName;
+    String size;
+    String color;
     Integer skuId;
     Integer count;
     /**

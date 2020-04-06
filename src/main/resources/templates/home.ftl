@@ -25,13 +25,17 @@
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="库存列表" id="sku" lay-direction="4">
+                        <a href="javascript:;" lay-tips="库存总览" id="sku" lay-direction="4">
                             <i class="layui-icon layui-icon-tabs"></i>
-                            <cite>库存列表</cite>
+                            <cite>库存总览</cite>
                         </a>
                         <a href="javascript:;" lay-tips="库存录入" id="goods_import" lay-direction="3">
                             <i class="layui-icon layui-icon-survey"></i>
                             <cite>库存录入</cite>
+                        </a>
+                        <a href="javascript:;" lay-tips="库存变化" id="change" lay-direction="2">
+                            <i class="layui-icon layui-icon-chart"></i>
+                            <cite>库存变化</cite>
                         </a>
                         <a href="javascript:;" lay-tips="商品销售" id="sale" lay-direction="1">
                             <i class="layui-icon layui-icon-rmb"></i>
@@ -51,7 +55,7 @@
         </div>
 
         <!-- 页面标签 -->
-        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+        <div class="layadmin-pagetabs" style="top:10px" id="LAY_app_tabs">
             <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
                 <ul class="layui-tab-title" id="LAY_app_tabsheader">
                     <li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
@@ -61,9 +65,9 @@
 
 
         <!-- 主体内容 -->
-        <div class="layui-body" id="LAY_app_body">
+        <div class="layui-body" style="top:50px" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="/goods_list_page" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="/desc" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 
@@ -93,11 +97,15 @@
         });
 
         $('#sku').click(function () {
-            layui.index.openTabsPage("/goods_list_page", "库存列表");
+            layui.index.openTabsPage("/goods_list_page", "库存总览");
         });
 
         $('#refund').click(function () {
             layui.index.openTabsPage("/refund_list_page", "退货明细");
+        });
+
+        $('#change').click(function () {
+            layui.index.openTabsPage("/sku_change_page", "库存变化");
         });
     });
 </script>

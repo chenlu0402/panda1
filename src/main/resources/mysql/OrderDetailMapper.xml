@@ -40,6 +40,8 @@
             SELECT
                 a.order_id,
                 p.spu_name,
+                k.size,
+                k.color,
                 a.sku_id,
                 a.count,
                 a.discount_type,
@@ -48,9 +50,12 @@
                 a.discount_amount
             FROM
                 order_detail a,
-                spu p
+                spu p,
+                sku k
             WHERE
                 a.spu_id = p.spu_id
+                AND a.sku_id = k.sku_id
+                AND k.spu_id = p.spu_id
                 AND a.order_id = #{orderId}
             ) m
             LEFT JOIN ( SELECT sku_id,sum( count ) AS count, sum( amount ) AS amount FROM refund WHERE order_id = #{orderId} GROUP BY sku_id ) d

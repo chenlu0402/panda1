@@ -11,6 +11,7 @@ import com.sale.panda.dao.SkuMapper;
 import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.GoodsPageQuery;
 import com.sale.panda.dao.entity.Sku;
+import com.sale.panda.dao.entity.SubCountInfo;
 import com.sale.panda.manager.SkuManager;
 import com.sale.panda.manager.entity.PageQueryResult;
 import org.apache.commons.lang3.StringUtils;
@@ -88,5 +89,10 @@ public class SkuManagerImpl implements SkuManager {
             });
         }
         return result;
+    }
+
+    @Override
+    public Integer subCount(List<SubCountInfo> list) {
+        return skuMapper.subCount(list);
     }
 }

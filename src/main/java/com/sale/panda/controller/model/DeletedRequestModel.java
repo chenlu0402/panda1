@@ -20,18 +20,8 @@ import lombok.experimental.FieldDefaults;
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GoodsModel {
+public class DeletedRequestModel {
     Integer skuId;
-    String spuName;
-    String spuId;
-    Integer type;
-    String size;
-    String color;
-    String feature1;
-    String feature2;
-    String feature3;
     Integer count;
-    String inPrice;
-    String salePrice;
-    Integer isDeleted;
+    String createdTime;
 }

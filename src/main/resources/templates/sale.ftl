@@ -33,7 +33,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">商品编号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="spuId" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" id="spuId" name="spuId" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -289,6 +289,7 @@
             table.reload('sale', {
                 data: oldData
             });
+            $('#spuId').val('');
         });
 
         var handleSettleIndex = 0;
@@ -324,7 +325,15 @@
         form.on('submit(settle)',function () {
             var order = form.val("settle_form");
             var tableData = table.cache.sale;
-            order.saleGoodsList = JSON.stringify(tableData);
+            var result = [];
+            for(var i=0;i<tableData.length;i++){
+                //跳过空行
+                if(tableData[i].length == 0){
+                    continue;
+                }
+                result.push(tableData[i]);
+            }
+            order.saleGoodsList = JSON.stringify(result);
             $.ajax({
                 url: "/order/settleOrder",
                 type: 'post',

@@ -26,7 +26,7 @@ public interface GoodsImportDetailMapper {
 
     Integer batchInsert(List<Goods> goods);
 
-    Integer update(Goods goods);
+    Integer delete(Goods goods);
 
     List<Goods> pageQuery(GoodsPageQuery pageQuery);
 

@@ -9,13 +9,12 @@ package com.sale.panda.dao;
 
 import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.GoodsPageQuery;
-import com.sale.panda.dao.entity.OrderDetail;
 import com.sale.panda.dao.entity.Sku;
-
-import java.util.List;
-
+import com.sale.panda.dao.entity.SubCountInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商品sku
@@ -48,6 +47,6 @@ public interface SkuMapper {
      * @param list
      * @return
      */
-    Integer subCount(List<OrderDetail> list);
+    Integer subCount(List<SubCountInfo> list);
 
 }

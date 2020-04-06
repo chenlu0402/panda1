@@ -8,14 +8,13 @@
 package com.sale.panda.manager.impl;
 
 import com.sale.panda.controller.model.RefundModel;
-import com.sale.panda.dao.OrderDetailMapper;
-import com.sale.panda.dao.OrderMapper;
-import com.sale.panda.dao.RefundMapper;
-import com.sale.panda.dao.SkuMapper;
+import com.sale.panda.dao.*;
 import com.sale.panda.dao.entity.*;
 import com.sale.panda.manager.OrderManager;
 import com.sale.panda.manager.constants.DiscountTypeEnum;
+import com.sale.panda.manager.constants.SkuChangeActionEnum;
 import com.sale.panda.manager.entity.PageQueryResult;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +22,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单相关
@@ -46,6 +46,9 @@ public class OrderManagerImpl implements OrderManager {
     @Resource
     private SkuMapper skuMapper;
 
+    @Resource
+    private SkuChangeLogMapper changeLogMapper;
+
     @Override
     public Integer insert(Order order) {
         return orderMapper.insert(order);
@@ -53,8 +56,22 @@ public class OrderManagerImpl implements OrderManager {
 
     @Override
     public Integer insert(List<OrderDetail> details) {
+        List<SubCountInfo> subCountInfos = new ArrayList<>();
+        List<SkuChangeLog> logs = new ArrayList<>();
         //减去销售出去的库存
-        skuMapper.subCount(details);
+        details.stream().forEach(detail ->{
+            SubCountInfo subCountInfo = new SubCountInfo();
+            BeanUtils.copyProperties(detail,subCountInfo);
+            subCountInfos.add(subCountInfo);
+
+            SkuChangeLog log = new SkuChangeLog();
+            log.setAction(SkuChangeActionEnum.SALE.getType());
+            log.setSkuId(detail.getSkuId());
+            log.setCount(0 - detail.getCount());
+            logs.add(log);
+        });
+        skuMapper.subCount(subCountInfos);
+        changeLogMapper.batchInsert(logs);
         return detailMapper.batchInsert(details);
     }
 
@@ -95,6 +112,15 @@ public class OrderManagerImpl implements OrderManager {
         }
         refundMapper.insert(refunds);
         skuMapper.batchUpdate(skus);
+
+        List<SkuChangeLog> logs = skus.stream().map(sku->{
+            SkuChangeLog log = new SkuChangeLog();
+            log.setAction(SkuChangeActionEnum.REFUND.getType());
+            log.setCount(sku.getCount());
+            log.setSkuId(sku.getSkuId());
+            return log;
+        }).collect(Collectors.toList());
+        changeLogMapper.batchInsert(logs);
     }
 
     @Override

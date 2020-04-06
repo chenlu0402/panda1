@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sale.panda.dao.SkuChangeLogMapper">
+
+    <insert id="insert" parameterType="com.sale.panda.dao.entity.SkuChangeLog">
+       insert into sku_change_log
+       (sku_id,
+        count,
+        action)
+        VALUES
+        (#{skuId},
+        #{count},
+        #{action})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sku_change_log
+        (sku_id,
+        count,
+        action)
+        values
+        <foreach collection="list" item="good" separator=",">
+            (#{good.skuId},
+            #{good.count},
+            #{good.action})
+        </foreach>
+    </insert>
+
+    <select id="pageQueryChangeLog" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="com.sale.panda.dao.entity.SkuChangeDetail">
+        SELECT
+            l.action,
+            l.count,
+            l.sku_id,
+            l.created_time,
+            k.color,
+            k.size,
+            p.spu_name
+        FROM
+            sku_change_log l,
+            sku k,
+            spu p
+        WHERE
+            l.sku_id = k.sku_id
+            AND k.spu_id = p.spu_id
+            <if test="spuName != null and spuName != ''">
+                p.spu_name like "%"#{spuName}"%"
+            </if>
+            <if test="createdTimeStart !=null and createdTimeStart !=''">
+                and l.created_time &gt;= #{createdTimeStart}
+            </if>
+            <if test="createdTimeEnd !=null and createdTimeEnd !=''">
+                and l.created_time &lt;= #{createdTimeEnd}
+            </if>
+        order by l.created_time desc
+    </select>
+
+    <select id="count" parameterType="com.sale.panda.dao.entity.GoodsPageQuery" resultType="java.lang.Integer">
+        select count(1)
+        from
+            sku_change_log l,
+            sku k,
+            spu p
+        WHERE
+            l.sku_id = k.sku_id
+            AND k.spu_id = p.spu_id
+            <if test="spuName != null and spuName != ''">
+                and p.spu_name like "%"#{spuName}"%"
+            </if>
+            <if test="createdTimeStart !=null and createdTimeStart !=''">
+                and l.created_time &gt;= #{createdTimeStart}
+            </if>
+            <if test="createdTimeEnd !=null and createdTimeEnd !=''">
+                and l.created_time &lt;= #{createdTimeEnd}
+            </if>
+    </select>
+
+</mapper>

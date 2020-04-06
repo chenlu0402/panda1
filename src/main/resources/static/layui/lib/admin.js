@@ -616,7 +616,6 @@ layui.define('view', function(exports){
     admin.tabsPage.index = index;
 
     setThisRouter(othis);
-    admin.events.refresh();
   });
   
   //监听 tabspage 删除

@@ -20,14 +20,14 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">商品名称</label>
-                    <div class="layui-input-block">
+                    <label class="layui-form-label" style="width: 100px">商品名称</label>
+                    <div class="layui-input-inline">
                         <input type="text" name="spuName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">品类</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <select name="type" lay-verify="">
                             <option value="">请选择商品类型</option>
                             <#list goodsTypeList as t>
@@ -36,9 +36,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">商品录入时间</label>
-                    <div class="layui-input-block">
+                    <label class="layui-form-label" style="width: 100px">商品录入时间</label>
+                    <div class="layui-input-inline" style="width: 320px">
                         <input type="text" id="datetime" name="datetimeRange" class="layui-input">
                     </div>
                 </div>
@@ -133,7 +135,6 @@
 </body>
 </html>
 <script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger" lay-event="del">删除</a>
 </script>
 <script>
@@ -200,16 +201,16 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
 
-            if (layEvent === 'detail') { //查看
-                //location.href = '/goods_import?spuId=' + data.spuId;
-            } else if (layEvent === 'del') { //删除
-                var spuId = data.spuId;
-                layer.confirm('确认删除编号为' + spuId + '的商品？', function (index) {
+            if (layEvent === 'del') { //删除
+                var desc = data.spuName + data.size + data.color;
+                layer.confirm('确认删除录入的商品：' + desc + '？', function (index) {
                     var skuId = data.skuId;
+                    var createdTime = data.createdTime;
+                    var count = data.count;
                     $.ajax({
-                        url: "/goods/updateImportGoods",
+                        url: "/goods/deletedImportedGoods",
                         type: 'POST',
-                        data: JSON.stringify({"skuId": skuId, "isDeleted": 1}),
+                        data: JSON.stringify({"skuId": skuId, "createdTime":createdTime, "count": count}),
                         contentType: 'application/json',
                         dataType: 'json',
                         success: function () {
@@ -218,45 +219,6 @@
                             layer.msg('删除成功！');
                         }
                     });
-                });
-            } else if (layEvent === 'edit') { //编辑
-                form.val("edit_goods", {//formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
-                    "spuId": data.spuId
-                    , "skuId": data.skuId
-                    , "spuName": data.spuName // "name": "value"
-                    , "type": data.type
-                    , "size": data.size
-                    , "color": data.color
-                    , "feature1": data.feature1
-                    , "feature2": data.feature2
-                    , "feature3": data.feature3
-                    , "inPrice": data.inPrice
-                    , "salePrice": data.salePrice
-                    , "count": data.count
-                });
-                layer.open({
-                    type: 1,
-                    title: '修改商品',
-                    btn: ['确认', '取消'],
-                    yes: function (index, layero) {
-                        var formVal = form.val("edit_goods");
-                        $.ajax({
-                            url: "/goods/updateImportGoods",
-                            type: 'POST',
-                            data: JSON.stringify(formVal),
-                            contentType: 'application/json',
-                            dataType: 'json',
-                            success: function () {
-                                layer.close(index);
-                                table.reload('goods_import');
-                                layer.msg('修改成功！');
-                            }
-                        });
-                    },
-                    cancel: function (index, layero) {
-                        layer.close(index);
-                    },
-                    content: $('#edit_goods') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 });
             }
         });

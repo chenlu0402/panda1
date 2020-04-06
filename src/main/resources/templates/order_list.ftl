@@ -20,20 +20,22 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">订单编号</label>
-                    <div class="layui-input-block">
+                    <label class="layui-form-label" style="width: 100px">订单编号</label>
+                    <div class="layui-input-inline">
                         <input type="text" name="orderId" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">备注</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <input type="text" name="remark" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+            </div>
+            <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">订单创建时间</label>
-                    <div class="layui-input-block">
+                    <label class="layui-form-label" style="width: 100px">订单创建时间</label>
+                    <div class="layui-input-inline" style="width: 320px;">
                         <input type="text" id="datetime" name="datetimeRange" class="layui-input">
                     </div>
                 </div>

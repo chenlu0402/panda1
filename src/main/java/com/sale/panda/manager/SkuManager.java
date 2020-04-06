@@ -10,6 +10,7 @@ package com.sale.panda.manager;
 import com.sale.panda.dao.entity.Goods;
 import com.sale.panda.dao.entity.Sku;
 import com.sale.panda.dao.entity.GoodsPageQuery;
+import com.sale.panda.dao.entity.SubCountInfo;
 import com.sale.panda.manager.entity.PageQueryResult;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface SkuManager {
     List<Goods> listGoodsBySpuId(Integer spuId);
 
     List<Goods> listSkuForSale(Integer spuId);
+
+    Integer subCount(List<SubCountInfo> list);
 }

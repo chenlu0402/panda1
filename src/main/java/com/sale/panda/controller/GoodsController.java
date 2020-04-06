@@ -8,33 +8,21 @@
 package com.sale.panda.controller;
 
 import com.sale.panda.controller.model.BaseResult;
-import com.sale.panda.controller.model.GoodsModel;
+import com.sale.panda.controller.model.DeletedRequestModel;
 import com.sale.panda.controller.model.GoodsPageQueryModel;
-import com.sale.panda.dao.entity.Goods;
-import com.sale.panda.dao.entity.GoodsPageQuery;
-import com.sale.panda.dao.entity.GoodsType;
-import com.sale.panda.dao.entity.Sku;
-import com.sale.panda.manager.GoodsImportDetailManager;
-import com.sale.panda.manager.GoodsTypeManager;
-import com.sale.panda.manager.SkuManager;
-import com.sale.panda.manager.SpuManager;
+import com.sale.panda.dao.entity.*;
+import com.sale.panda.manager.*;
 import com.sale.panda.manager.constants.ResponseStatus;
 import com.sale.panda.manager.entity.PageQueryResult;
-
-import java.math.BigDecimal;
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 商品相关
@@ -59,22 +47,29 @@ public class GoodsController {
     @Resource
     private GoodsTypeManager goodsTypeManager;
 
+    @Resource
+    private SkuChangeLogManager changeLogManager;
+
     @GetMapping("/listAllType")
     public BaseResult<List<GoodsType>> listAllType(){
         return BaseResult.buildSuccess(goodsTypeManager.listAllGoodsType());
     }
 
-    @PostMapping("/updateImportGoods")
-    public BaseResult updateGoods(@RequestBody GoodsModel goodsModel) {
+    @PostMapping("/deletedImportedGoods")
+    @Transactional(rollbackFor = Exception.class)
+    public BaseResult deletedImportedGoods(@RequestBody DeletedRequestModel requestModel) {
         Goods good = new Goods();
-        BeanUtils.copyProperties(goodsModel, good);
-        if (StringUtils.isNotBlank(goodsModel.getInPrice())) {
-            good.setInPrice(new BigDecimal(goodsModel.getInPrice()));
-        }
-        if (StringUtils.isNoneBlank(goodsModel.getSalePrice())) {
-            good.setSalePrice(new BigDecimal(goodsModel.getSalePrice()));
-        }
-        detailManager.update(good);
+        good.setSkuId(requestModel.getSkuId());
+        good.setCreatedTime(requestModel.getCreatedTime());
+        good.setCount(requestModel.getCount());
+        detailManager.delete(good);
+
+        List<SubCountInfo> list = new ArrayList<>();
+        SubCountInfo subCountInfo = new SubCountInfo();
+        subCountInfo.setSkuId(requestModel.getSkuId());
+        subCountInfo.setCount(requestModel.getCount());
+        list.add(subCountInfo);
+        skuManager.subCount(list);
         return BaseResult.buildSuccess();
     }
 
@@ -129,6 +124,19 @@ public class GoodsController {
     public BaseResult<Sku> getSkuById(@RequestParam Integer skuId){
         Sku sku = skuManager.getSku(skuId);
         return BaseResult.buildSuccess(sku);
+    }
+
+    @PostMapping("/pageQueryChangeDetail")
+    public BaseResult<List<SkuChangeDetail>> pageQueryChangeDetail(@RequestBody GoodsPageQueryModel goodsModel){
+        GoodsPageQuery pageQuery = new GoodsPageQuery();
+        pageQuery.setSpuName(goodsModel.getSpuName());
+        if (StringUtils.isNotBlank(goodsModel.getDatetimeRange())) {
+            String[] datetimeRange = goodsModel.getDatetimeRange().split("~");
+            pageQuery.setCreatedTimeStart(datetimeRange[0]);
+            pageQuery.setCreatedTimeEnd(datetimeRange[1]);
+        }
+        PageQueryResult<List<SkuChangeDetail>> result = changeLogManager.pageQueryChangeDetail(pageQuery);
+        return BaseResult.buildSuccess(result.getData(), result.getTotal());
     }
 
 }
