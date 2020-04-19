@@ -21,6 +21,9 @@
             height: 30px;
             overflow: auto !important;
         }
+        .layui-form-selectup dl {
+            bottom: auto;
+        }
 
     </style>
 </head>
@@ -127,9 +130,9 @@
             , limit: 100
             , data: []
             , cols: [[ //表头
-                {field: 'spuId', title: '商品编号', width: 90, fixed: 'left'}
+                {field: 'spuId', title: '商品编号', width: 90}
                 , {field: 'skuId', title: 'sku编号', hide: true}
-                , {field: 'spuName', title: '商品名称', width: 200, fixed: 'left', edit: 'text'}
+                , {field: 'spuName', title: '商品名称', width: 200, edit: 'text'}
                 , {field: 'type', title: '品类', width: 130, templet: '#typeTpl'}
                 , {field: 'size', title: '尺码', width: 90, edit: 'text'}
                 , {field: 'color', title: '颜色', width: 90, edit: 'text'}
@@ -139,7 +142,7 @@
                 , {field: 'count', title: '数量', width: 90, edit: 'text'}
                 , {field: 'inPrice', title: '成本价', width: 90, edit: 'text'}
                 , {field: 'salePrice', title: '销售价', width: 90, edit: 'text'}
-                , {fixed: 'right', width: 120, align: 'center', toolbar: '#bar'}
+                , { width: 120, align: 'center', toolbar: '#bar'}
             ]]
         });
 
